@@ -27,19 +27,19 @@ public class TransactionEntity extends PanacheEntityBase implements Serializable
     @Id
     private String transactionId;
 
-    @Column(name = "function_type")
+    @Column(name = "function_type", nullable = false)
     private String functionType;
 
-    @Column(name = "acquirer_id")
+    @Column(name = "acquirer_id", nullable = false)
     private String acquirerId;
 
-    @Column(name = "branch_id")
+    @Column(name = "branch_id", nullable = false)
     private String branchId;
 
-    @Column(name = "terminal_id")
+    @Column(name = "terminal_id", nullable = false)
     private String terminalId;
 
-    @Column(name = "transaction_status")
+    @Column(name = "transaction_status", nullable = false)
     private String transactionStatus;
 
     @Column(name = "created_at")
