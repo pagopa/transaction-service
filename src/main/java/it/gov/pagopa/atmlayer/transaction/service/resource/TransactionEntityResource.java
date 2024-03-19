@@ -93,7 +93,7 @@ public class TransactionEntityResource {
                 .onItem()
                 .transform(Unchecked.function(list -> {
                     if (list.isEmpty()) {
-                        log.info("There is not any transaction saved in database");
+                        log.info("There is not any transaction saved in database!");
                     }
                     return transactionEntityMapper.toDTOList(list);
                 }));
