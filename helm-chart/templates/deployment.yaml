@@ -38,6 +38,24 @@ spec:
             - containerPort: {{ .Values.service.port }}
           imagePullPolicy: Always
           env:
+            - name: TRANSACTION_SERVICE_DB_TYPE
+              value: "{{ .Values.database.type }}"
+            - name: TRANSACTION_SERVICE_DB_URL
+              value: "{{ .Values.database.url }}"
+            - name: TRANSACTION_SERVICE_DB_SCHEMA_UPDATE_TYPE
+              value: "{{ .Values.database.schemaUpdateType }}"
+            - name: SERVER_PORT
+              value: "{{ .Values.serverPort }}"
+            - name: TRANSACTION_SERVICE_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.credentialsSecretName }}
+                  key: {{ .Values.database.credentialsSecretKeys.username }}
+            - name: TRANSACTION_SERVICE_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.credentialsSecretName }}
+                  key: {{ .Values.database.credentialsSecretKeys.password }}
           volumeMounts:
           {{- if .Values.secretProviderClass.enabled }}
           - name: secrets-store-inline

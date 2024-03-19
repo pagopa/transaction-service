@@ -16,8 +16,19 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+database:
+  type: postgresql
+  url: postgresql://pagopa-prod-atm-layer-rds.cluster-cjww3kikqdtw.eu-south-1.rds.amazonaws.com:5432
+  schemaUpdateType: false
+  credentialsSecretName: "pagopa-prod-atm-layer-mil-adapter-database"
+  credentialsSecretKeys:
+    username: DB_USERNAME
+    password: DB_PASSWORD
+
+serverPort: 8080
+
 secretProviderClass:
-  enabled: false
+  enabled: true
   name: atm-layer-transaction-service-secrets
   env: prod
 
@@ -46,6 +57,9 @@ securityContext: {}
 
 deployment:
   name: pagopa-prod-atm-layer-transaction-service
+  annotations:
+    reloader.stakater.com/auto: "true"
+    secret.reloader.stakater.com/reload: pagopa-prod-atm-layer-transaction-service-database
 
 service:
   name: pagopa-prod-atm-layer-transaction-service
