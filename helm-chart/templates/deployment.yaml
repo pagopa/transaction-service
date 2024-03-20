@@ -46,6 +46,8 @@ spec:
               value: "{{ .Values.database.schemaUpdateType }}"
             - name: SERVER_PORT
               value: "{{ .Values.serverPort }}"
+            - name: TRANSACTION_SERVICE_APPLICATION_BASE_PATH
+              value: "{{ .Values.basePath }}"
             - name: TRANSACTION_SERVICE_DB_USERNAME
               valueFrom:
                 secretKeyRef:
