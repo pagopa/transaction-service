@@ -19,7 +19,6 @@ fullnameOverride: ""
 database:
   type: postgresql
   url: postgresql://pagopa-dev-atm-layer-rds.cluster-cyezwzpjc2tj.eu-south-1.rds.amazonaws.com:5431/pagopadb?search_path=atm_layer_model_schema
-  schemaUpdateType: false
   credentialsSecretName: "pagopa-dev-atm-layer-transaction-service-database"
   credentialsSecretKeys:
     username: DB_USERNAME
