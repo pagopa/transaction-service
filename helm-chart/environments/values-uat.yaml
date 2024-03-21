@@ -19,7 +19,6 @@ fullnameOverride: ""
 database:
   type: postgresql
   url: postgresql://pagopa-uat-atm-layer-rds.cluster-csdbokdg0q4t.eu-south-1.rds.amazonaws.com:5432/pagopadb?search_path=atm_layer_model_schema
-  schemaUpdateType: false
   credentialsSecretName: "pagopa-uat-atm-layer-mil-adapter-database"
   credentialsSecretKeys:
     username: DB_USERNAME

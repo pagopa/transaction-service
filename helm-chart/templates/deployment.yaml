@@ -42,8 +42,6 @@ spec:
               value: "{{ .Values.database.type }}"
             - name: TRANSACTION_SERVICE_DB_URL
               value: "{{ .Values.database.url }}"
-            - name: TRANSACTION_SERVICE_DB_SCHEMA_UPDATE_TYPE
-              value: "{{ .Values.database.schemaUpdateType }}"
             - name: SERVER_PORT
               value: "{{ .Values.serverPort }}"
             - name: TRANSACTION_SERVICE_APPLICATION_BASE_PATH

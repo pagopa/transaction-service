@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 public class TransactionEntityRepository implements PanacheRepositoryBase<TransactionEntity, String> {
 
     public Uni<PageInfo<TransactionEntity>> findByFilters(Map<String, Object> params, int pageIndex, int pageSize) {
-        String queryFilters = params.keySet().stream().map(key -> ("t." + key + " = :" + key)
-        ).collect(Collectors.joining(" and "));
+        String queryFilters = params.keySet().stream().map(key -> ("t." + key + " = :" + key)).collect(Collectors.joining(" and "));
         PanacheQuery<TransactionEntity> queryResult = find(("select t from TransactionEntity t").concat(queryFilters.isBlank() ? "" : " where " + queryFilters).concat(" order by t.lastUpdatedAt DESC"), params).page(Page.of(pageIndex, pageSize));
         return queryResult.count()
                 .onItem().transformToUni(count -> {
