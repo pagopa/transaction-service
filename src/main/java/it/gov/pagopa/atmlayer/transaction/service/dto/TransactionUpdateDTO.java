@@ -1,6 +1,7 @@
 package it.gov.pagopa.atmlayer.transaction.service.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -13,8 +14,8 @@ import lombok.*;
 public class TransactionUpdateDTO {
     @NotBlank
     private String transactionId;
-    @NotBlank
+    @NotNull
     private String transactionStatus;
-    @NotBlank
+    @NotNull
     private String functionType;
 }

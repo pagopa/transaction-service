@@ -7,6 +7,7 @@ public enum AppErrorCodeEnum {
 
     ATMLTS_500("ATMLTS_500", "An unexpected error has occurred, see logs for more info", AppErrorType.GENERIC),
     TRANSACTION_NOT_FOUND("ATMLTS_404","There is no such transaction id in database", AppErrorType.TRANSACTION_ID_NOT_FOUND),
+    ALL_FIELDS_ARE_BLANK("ATMLTS_1000002", "All the fields that can be updated are blank", AppErrorType.BLANK_FIELDS),
     TRANSACTION_ID_ALREADY_EXISTS("ATMLTS_1000001", "A transaction having the same transaction id is already present in the database", AppErrorType.CONSTRAINT_VIOLATION);
 
     private final String errorCode;
