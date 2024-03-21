@@ -46,8 +46,19 @@ public class TransactionEntityServiceImpl implements TransactionEntityService {
         return this.findById(transactionUpdateDTO.getTransactionId())
                 .onItem()
                 .transformToUni(Unchecked.function(transactionFound -> {
-                    transactionFound.setTransactionStatus(transactionUpdateDTO.getTransactionStatus());
-                    transactionFound.setFunctionType(transactionUpdateDTO.getFunctionType());
+                    if(transactionUpdateDTO.getTransactionStatus().isBlank() && transactionUpdateDTO.getFunctionType().isBlank()){
+                        throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.ALL_FIELDS_ARE_BLANK);
+                    }
+                    else if(transactionUpdateDTO.getTransactionStatus().isBlank()){
+                        transactionFound.setFunctionType(transactionUpdateDTO.getFunctionType());
+                    }
+                    else if (transactionUpdateDTO.getFunctionType().isBlank()){
+                        transactionFound.setTransactionStatus(transactionUpdateDTO.getTransactionStatus());
+                    }
+                    else{
+                        transactionFound.setTransactionStatus(transactionUpdateDTO.getTransactionStatus());
+                        transactionFound.setFunctionType(transactionUpdateDTO.getFunctionType());
+                    }
                     transactionFound.setLastUpdatedAt(new Timestamp(System.currentTimeMillis()));
                     return transactionEntityRepository.persist(transactionFound);
                 }));

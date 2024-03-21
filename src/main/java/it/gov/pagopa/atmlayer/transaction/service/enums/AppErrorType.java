@@ -6,5 +6,6 @@ import lombok.Getter;
 public enum AppErrorType {
     GENERIC,
     TRANSACTION_ID_NOT_FOUND,
-    CONSTRAINT_VIOLATION
-}
+    CONSTRAINT_VIOLATION,
+    BLANK_FIELDS
+    }
