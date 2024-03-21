@@ -47,6 +47,7 @@ public class TransactionEntityServiceImpl implements TransactionEntityService {
                 .onItem()
                 .transformToUni(Unchecked.function(transactionFound -> {
                     transactionFound.setTransactionStatus(transactionUpdateDTO.getTransactionStatus());
+                    transactionFound.setFunctionType(transactionUpdateDTO.getFunctionType());
                     transactionFound.setLastUpdatedAt(new Timestamp(System.currentTimeMillis()));
                     return transactionEntityRepository.persist(transactionFound);
                 }));
