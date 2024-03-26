@@ -5,6 +5,7 @@ import io.smallrye.mutiny.CompositeException;
 import it.gov.pagopa.atmlayer.transaction.service.exception.AtmLayerException;
 import it.gov.pagopa.atmlayer.transaction.service.model.ATMLayerErrorResponse;
 import it.gov.pagopa.atmlayer.transaction.service.model.ATMLayerValidationErrorResponse;
+import it.gov.pagopa.atmlayer.transaction.service.utils.ConstraintViolationMappingUtils;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.validation.ConstraintViolation;
@@ -13,7 +14,6 @@ import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
-import it.gov.pagopa.atmlayer.transaction.service.utils.ConstraintViolationMappingUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,10 +29,10 @@ public class GlobalExceptionMapperImpl {
     ConstraintViolationMappingUtils constraintViolationMappingUtils;
 
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionMapperImpl.class);
-    private final String EXCEPTION_TYPE="type";
-    private final String EXCEPTION_ERROR_CODE="errorCode";
-    private final String EXCEPTION_MESSAGE="message";
-    private final String EXCEPTION_STATUS_CODE="statusCode";
+    private final String EXCEPTION_TYPE = "type";
+    private final String EXCEPTION_ERROR_CODE = "errorCode";
+    private final String EXCEPTION_MESSAGE = "message";
+    private final String EXCEPTION_STATUS_CODE = "statusCode";
 
     @ServerExceptionMapper
     public RestResponse<ATMLayerValidationErrorResponse> constraintViolationExceptionMapper(ConstraintViolationException exception) {

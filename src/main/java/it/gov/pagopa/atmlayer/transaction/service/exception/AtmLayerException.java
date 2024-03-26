@@ -1,12 +1,12 @@
 package it.gov.pagopa.atmlayer.transaction.service.exception;
 
 
+import it.gov.pagopa.atmlayer.transaction.service.enums.AppErrorCodeEnum;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import lombok.Builder;
 import lombok.Getter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import it.gov.pagopa.atmlayer.transaction.service.enums.AppErrorCodeEnum;
 
 import static it.gov.pagopa.atmlayer.transaction.service.enums.AppErrorCodeEnum.ATMLTS_500;
 

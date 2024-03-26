@@ -16,15 +16,13 @@ public class TransactionRepository implements PanacheRepositoryBase<TransactionE
 
     public Uni<PageInfo<TransactionEntity>> findByFilters(Map<String, Object> params, int pageIndex, int pageSize) {
 
-            String queryFilters = params.keySet().stream()
-                    .map(key ->{
-                        if ("startTime".equals(key)) {
-                            return "t.createdAt >= :" + key;
-                        }
-                        return "endTime".equals(key) ? "t.createdAt <= :" + key :
-                                    "t." + key + " = :" + key;
-                    })
-                    .collect(Collectors.joining(" and "));
+        String queryFilters = params.keySet().stream()
+                .map(key -> {
+                    if ("startTime".equals(key)) {
+                        return "t.createdAt >= :" + key;
+                    }
+                    return "endTime".equals(key) ? "t.createdAt <= :" + key : "t." + key + " = :" + key;
+                }).collect(Collectors.joining(" and "));
         //  "t.branchId = :branchId and t.acquirerId = :acquirerId and t.functionType = :functionType and t.createdAt >= :startTime and t.createdAt <= :endTime"
 
         PanacheQuery<TransactionEntity> queryResult = find(("select t from TransactionEntity t")
