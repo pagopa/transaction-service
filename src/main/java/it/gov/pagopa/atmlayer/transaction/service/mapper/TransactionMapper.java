@@ -1,10 +1,10 @@
 package it.gov.pagopa.atmlayer.transaction.service.mapper;
 
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionDTO;
-import org.mapstruct.Mapper;
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionInsertionDTO;
 import it.gov.pagopa.atmlayer.transaction.service.entity.TransactionEntity;
 import it.gov.pagopa.atmlayer.transaction.service.model.PageInfo;
+import org.mapstruct.Mapper;
 
 import java.util.List;
 

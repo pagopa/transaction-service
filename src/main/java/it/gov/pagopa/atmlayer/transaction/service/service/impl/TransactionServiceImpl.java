@@ -4,17 +4,16 @@ import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.unchecked.Unchecked;
+import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionUpdateDTO;
 import it.gov.pagopa.atmlayer.transaction.service.entity.TransactionEntity;
 import it.gov.pagopa.atmlayer.transaction.service.enums.AppErrorCodeEnum;
-import it.gov.pagopa.atmlayer.transaction.service.enums.AppErrorType;
 import it.gov.pagopa.atmlayer.transaction.service.exception.AtmLayerException;
 import it.gov.pagopa.atmlayer.transaction.service.model.PageInfo;
+import it.gov.pagopa.atmlayer.transaction.service.repository.TransactionRepository;
 import it.gov.pagopa.atmlayer.transaction.service.service.TransactionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
-import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionUpdateDTO;
-import it.gov.pagopa.atmlayer.transaction.service.repository.TransactionRepository;
 
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -34,7 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
         return this.transactionRepository.findById(transactionEntity.getTransactionId())
                 .onItem()
                 .transformToUni(Unchecked.function(transaction -> {
-                    if(transaction != null){
+                    if (transaction != null) {
                         throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.TRANSACTION_ID_ALREADY_EXISTS);
                     }
                     return transactionRepository.persist(transactionEntity);
@@ -47,16 +46,13 @@ public class TransactionServiceImpl implements TransactionService {
         return this.findById(transactionUpdateDTO.getTransactionId())
                 .onItem()
                 .transformToUni(Unchecked.function(transactionFound -> {
-                    if(transactionUpdateDTO.getTransactionStatus().isBlank() && transactionUpdateDTO.getFunctionType().isBlank()){
+                    if (transactionUpdateDTO.getTransactionStatus().isBlank() && transactionUpdateDTO.getFunctionType().isBlank()) {
                         throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.ALL_FIELDS_ARE_BLANK);
-                    }
-                    else if(transactionUpdateDTO.getTransactionStatus().isBlank()){
+                    } else if (transactionUpdateDTO.getTransactionStatus().isBlank()) {
                         transactionFound.setFunctionType(transactionUpdateDTO.getFunctionType());
-                    }
-                    else if (transactionUpdateDTO.getFunctionType().isBlank()){
+                    } else if (transactionUpdateDTO.getFunctionType().isBlank()) {
                         transactionFound.setTransactionStatus(transactionUpdateDTO.getTransactionStatus());
-                    }
-                    else{
+                    } else {
                         transactionFound.setTransactionStatus(transactionUpdateDTO.getTransactionStatus());
                         transactionFound.setFunctionType(transactionUpdateDTO.getFunctionType());
                     }
@@ -81,9 +77,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @WithSession
     public Uni<PageInfo<TransactionEntity>> searchTransactions(int pageIndex, int pageSize, String transactionId, String functionType, String acquirerId, String branchId, String terminalId, String transacionStatus, Timestamp startTime, Timestamp endTime) {
-        if((startTime == null && endTime != null) || (startTime != null && endTime == null)){
+        if ((startTime == null && endTime != null) || (startTime != null && endTime == null)) {
             throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.BOTH_STARTTIME_AND_ENDTIME_SHOULD_BE_PRESENT);
-        } else if(startTime != null && startTime.after(endTime)){
+        } else if (startTime != null && startTime.after(endTime)) {
             throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.STARTTIME_CANNOT_BE_GREATER_THAN_ENDTIME);
         }
         Map<String, Object> filters = new HashMap<>();

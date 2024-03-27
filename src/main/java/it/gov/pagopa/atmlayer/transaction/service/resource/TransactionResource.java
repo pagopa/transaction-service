@@ -68,8 +68,8 @@ public class TransactionResource {
                                                 @QueryParam("branchId") String branchId,
                                                 @QueryParam("terminalId") String terminalId,
                                                 @QueryParam("transactionStatus") String transactionStatus,
-                                                @QueryParam("startTime") @Schema(example = "2023-11-03T14:18:36.635+00:00") Timestamp startTime,
-                                                @QueryParam("endTime") @Schema(example = "2023-11-03T14:18:36.635+00:00") Timestamp endTime) {
+                                                @QueryParam("startTime") @Schema(example = "yyyy-mm-dd hh:mm:ss") Timestamp startTime,
+                                                @QueryParam("endTime") @Schema(example = "yyyy-mm-dd hh:mm:ss") Timestamp endTime) {
         return this.transactionService.searchTransactions(pageIndex, pageSize, transactionId, functionType, acquirerId, branchId, terminalId, transactionStatus, startTime, endTime)
                 .onItem()
                 .transform(Unchecked.function(pagedList -> {
