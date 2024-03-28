@@ -4,6 +4,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionDTO;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Timestamp;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
@@ -93,48 +95,47 @@ class TransactionDTOTest {
 
     @Test
     void testToString() {
-        String transactionId = "123";
-        String functionType = "type";
-        String acquirerId = "acquirer";
-        String branchId = "branch";
-        String terminalId = "terminal";
-        String transactionStatus = "status";
-
-        TransactionDTO transactionDTO = TransactionDTO.builder()
-                .transactionId(transactionId)
-                .functionType(functionType)
-                .acquirerId(acquirerId)
-                .branchId(branchId)
-                .terminalId(terminalId)
-                .transactionStatus(transactionStatus)
+        TransactionDTO transaction = TransactionDTO.builder()
+                .transactionId("1")
+                .functionType("type1")
+                .acquirerId("acquirer1")
+                .branchId("branch1")
+                .terminalId("terminal1")
+                .transactionStatus("status1")
+                .createdAt(Timestamp.valueOf("2023-11-03 14:18:36.635"))
+                .lastUpdatedAt(Timestamp.valueOf("2023-11-03 14:18:36.635"))
                 .build();
-
-        String expectedToString = "TransactionDTO(transactionId=123, functionType=type, acquirerId=acquirer, branchId=branch, terminalId=terminal, transactionStatus=status, createdAt=null, lastUpdatedAt=null)";
-        assertEquals(expectedToString, transactionDTO.toString());
+        String expectedToString = "TransactionDTO(transactionId=1, functionType=type1, acquirerId=acquirer1, branchId=branch1, terminalId=terminal1, transactionStatus=status1, createdAt=2023-11-03 14:18:36.635, lastUpdatedAt=2023-11-03 14:18:36.635)";
+        assertEquals(expectedToString, transaction.toString());
     }
+
 
     @Test
     void testEqualsAndHashCode() {
-        TransactionDTO transactionDTO1 = TransactionDTO.builder()
-                .transactionId("123")
-                .functionType("type")
-                .acquirerId("acquirer")
-                .branchId("branch")
-                .terminalId("terminal")
-                .transactionStatus("status")
+        TransactionDTO transaction1 = TransactionDTO.builder()
+                .transactionId("1")
+                .functionType("type1")
+                .acquirerId("acquirer1")
+                .branchId("branch1")
+                .terminalId("terminal1")
+                .transactionStatus("status1")
+                .createdAt(Timestamp.valueOf("2023-11-03 14:18:36.635"))
+                .lastUpdatedAt(Timestamp.valueOf("2023-11-03 14:18:36.635"))
                 .build();
 
-        TransactionDTO transactionDTO2 = TransactionDTO.builder()
-                .transactionId("123")
-                .functionType("type")
-                .acquirerId("acquirer")
-                .branchId("branch")
-                .terminalId("terminal")
-                .transactionStatus("status")
+        TransactionDTO transaction2 = TransactionDTO.builder()
+                .transactionId("1")
+                .functionType("type1")
+                .acquirerId("acquirer1")
+                .branchId("branch1")
+                .terminalId("terminal1")
+                .transactionStatus("status1")
+                .createdAt(Timestamp.valueOf("2023-11-03 14:18:36.635"))
+                .lastUpdatedAt(Timestamp.valueOf("2023-11-03 14:18:36.635"))
                 .build();
 
-        assertEquals(transactionDTO1, transactionDTO2);
-        assertEquals(transactionDTO1.hashCode(), transactionDTO2.hashCode());
+        assertEquals(transaction1, transaction2);
+        assertEquals(transaction1.hashCode(), transaction2.hashCode());
     }
 
 }
