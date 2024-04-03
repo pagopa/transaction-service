@@ -76,7 +76,7 @@ public class TransactionResource {
                     if (pagedList.getResults().isEmpty()) {
                         log.info("No Transaction entity meets the applied filters");
                     }
-                    return transactionMapper.toFrontEndDtoPaged(pagedList);
+                    return transactionMapper.toDtoPaged(pagedList);
                 }));
     }
 
