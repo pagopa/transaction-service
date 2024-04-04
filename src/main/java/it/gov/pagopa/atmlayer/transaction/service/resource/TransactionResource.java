@@ -21,7 +21,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped
@@ -68,15 +68,15 @@ public class TransactionResource {
                                                 @QueryParam("branchId") String branchId,
                                                 @QueryParam("terminalId") String terminalId,
                                                 @QueryParam("transactionStatus") String transactionStatus,
-                                                @QueryParam("startTime") @Schema(example = "yyyy-mm-dd hh:mm:ss") Timestamp startTime,
-                                                @QueryParam("endTime") @Schema(example = "yyyy-mm-dd hh:mm:ss") Timestamp endTime) {
+                                                @QueryParam("startTime") @Schema(example = "yyyy-mm-ddThh:mm:ss") LocalDateTime startTime,
+                                                @QueryParam("endTime") @Schema(example = "yyyy-mm-ddThh:mm:ss") LocalDateTime endTime) {
         return this.transactionService.searchTransactions(pageIndex, pageSize, transactionId, functionType, acquirerId, branchId, terminalId, transactionStatus, startTime, endTime)
                 .onItem()
                 .transform(Unchecked.function(pagedList -> {
                     if (pagedList.getResults().isEmpty()) {
                         log.info("No Transaction entity meets the applied filters");
                     }
-                    return transactionMapper.toFrontEndDtoPaged(pagedList);
+                    return transactionMapper.toDtoPaged(pagedList);
                 }));
     }
 

@@ -29,10 +29,6 @@ public class GlobalExceptionMapperImpl {
     ConstraintViolationMappingUtils constraintViolationMappingUtils;
 
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionMapperImpl.class);
-    private final String EXCEPTION_TYPE = "type";
-    private final String EXCEPTION_ERROR_CODE = "errorCode";
-    private final String EXCEPTION_MESSAGE = "message";
-    private final String EXCEPTION_STATUS_CODE = "statusCode";
 
     @ServerExceptionMapper
     public RestResponse<ATMLayerValidationErrorResponse> constraintViolationExceptionMapper(ConstraintViolationException exception) {
@@ -42,14 +38,15 @@ public class GlobalExceptionMapperImpl {
     }
 
     @ServerExceptionMapper
+    public RestResponse<ATMLayerErrorResponse> genericExceptionMapper(AtmLayerException exception) {
+        return buildErrorResponse(exception);
+    }
+
+    @ServerExceptionMapper
     public RestResponse<ATMLayerErrorResponse> compositeException(CompositeException exception) {
         return buildErrorResponse(new AtmLayerException(exception));
     }
 
-    @ServerExceptionMapper
-    public RestResponse<ATMLayerErrorResponse> genericExceptionMapper(AtmLayerException exception) {
-        return buildErrorResponse(exception);
-    }
 
     @ServerExceptionMapper
     public RestResponse<ATMLayerErrorResponse> genericExceptionMapper(Exception exception) {

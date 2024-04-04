@@ -24,7 +24,7 @@ public abstract class TransactionMapper {
         return transactionEntity;
     }
 
-    public abstract PageInfo<TransactionDTO> toFrontEndDtoPaged(PageInfo<TransactionEntity> pagedTransactions);
+    public abstract PageInfo<TransactionDTO> toDtoPaged(PageInfo<TransactionEntity> pagedTransactions);
 
     public List<TransactionDTO> toDTOList(List<TransactionEntity> list) {
         return list.stream().map(this::toDTO).toList();
