@@ -72,13 +72,6 @@ class TransactionResourceTest {
         transactionUpdateDTO.setTransactionId("1");
         transactionUpdateDTO.setTransactionStatus("created");
         transactionUpdateDTO.setFunctionType("menu");
-        String myJson = """
-                {
-                    "transactionId": "1",
-                    "transactionStatus": "created",
-                    "functionType": "menu"
-                }
-                """;
 
         when(transactionService.updateTransactionEntity(any(TransactionUpdateDTO.class))).thenReturn(Uni.createFrom().item(transactionEntity));
         when(transactionMapper.toDTO(any(TransactionEntity.class))).thenReturn(transactionDTO);
@@ -96,14 +89,16 @@ class TransactionResourceTest {
         assertEquals(transactionDTO, result);
     }
 
-  /* @Test
+    @Test
     void testSearch() {
-        List<TransactionEntity> transactionEntities = new ArrayList<>();
-        transactionEntities.add(new TransactionEntity());
-        PageInfo<TransactionEntity> pageInfoEntity = new PageInfo<>(0, 10, 1, 1, transactionEntities);
-        List<TransactionDTO> transactionDTOs = new ArrayList<>();
-        transactionDTOs.add(new TransactionDTO());
-        PageInfo<TransactionDTO> pageInfoDTO = new PageInfo<>(0, 10, 1, 1, transactionDTOs);
+        List<TransactionEntity> transactionsList = new ArrayList<>();
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionsList.add(transactionEntity);
+        PageInfo<TransactionEntity> pageInfoEntity = new PageInfo<>(0, 10, 1, 1, transactionsList);
+        List<TransactionDTO> dtoList = new ArrayList<>();
+        TransactionDTO transactionDTO = new TransactionDTO();
+        dtoList.add(transactionDTO);
+        PageInfo<TransactionDTO> pageInfoDTO = new PageInfo<>(0, 10, 1, 1, dtoList);
 
         when(transactionService.searchTransactions(anyInt(), anyInt(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), any(), any())).thenReturn(Uni.createFrom().item(pageInfoEntity));
         when(transactionMapper.toDtoPaged(any(PageInfo.class))).thenReturn(pageInfoDTO);
@@ -112,6 +107,12 @@ class TransactionResourceTest {
                 .when()
                 .queryParam("pageIndex", 0)
                 .queryParam("pageSize", 10)
+                .queryParam("transactionId", "transactionId")
+                .queryParam("functionType", "functionType")
+                .queryParam("acquirerId", "acquirerId")
+                .queryParam("branchId", "branchId")
+                .queryParam("terminalId", "terminalId")
+                .queryParam("transactionStatus", "transactionStatus")
                 .get("/api/v1/transaction-service/transactions/search")
                 .then()
                 .statusCode(200)
@@ -126,8 +127,43 @@ class TransactionResourceTest {
 
         verify(transactionService, times(1)).searchTransactions(anyInt(), anyInt(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), any(), any());
         verify(transactionMapper, times(1)).toDtoPaged(any(PageInfo.class));
+    }
 
-    }*/
+    @Test
+    void testSearchEmptyList() {
+        List<TransactionEntity> transactionsList = new ArrayList<>();
+        PageInfo<TransactionEntity> pageInfoEntity = new PageInfo<>(0, 10, 0, 1, transactionsList);
+        List<TransactionDTO> dtoList = new ArrayList<>();
+        PageInfo<TransactionDTO> pageInfoDTO = new PageInfo<>(0, 10, 0, 1, dtoList);
+
+        when(transactionService.searchTransactions(anyInt(), anyInt(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), any(), any())).thenReturn(Uni.createFrom().item(pageInfoEntity));
+        when(transactionMapper.toDtoPaged(any(PageInfo.class))).thenReturn(pageInfoDTO);
+
+        PageInfo<TransactionDTO> result = given()
+                .when()
+                .queryParam("pageIndex", 0)
+                .queryParam("pageSize", 10)
+                .queryParam("transactionId", "transactionId")
+                .queryParam("functionType", "functionType")
+                .queryParam("acquirerId", "acquirerId")
+                .queryParam("branchId", "branchId")
+                .queryParam("terminalId", "terminalId")
+                .queryParam("transactionStatus", "transactionStatus")
+                .get("/api/v1/transaction-service/transactions/search")
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(new TypeRef<>() {
+                });
+
+        assertEquals(0, result.getResults().size());
+        assertEquals(pageInfoDTO.getItemsFound(), result.getItemsFound());
+        assertEquals(pageInfoDTO.getTotalPages(), result.getTotalPages());
+
+        verify(transactionService, times(1)).searchTransactions(anyInt(), anyInt(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), any(), any());
+        verify(transactionMapper, times(1)).toDtoPaged(any(PageInfo.class));
+    }
 
     @Test
     void testGetAll() {

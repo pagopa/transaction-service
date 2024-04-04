@@ -1,18 +1,16 @@
 package it.gov.pagopa.atmlayer.transaction.mapper;
 
 import io.quarkus.test.junit.QuarkusTest;
-import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionDTO;
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionInsertionDTO;
 import it.gov.pagopa.atmlayer.transaction.service.entity.TransactionEntity;
 import it.gov.pagopa.atmlayer.transaction.service.mapper.TransactionMapperImpl;
-import it.gov.pagopa.atmlayer.transaction.service.model.PageInfo;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @QuarkusTest
@@ -37,9 +35,9 @@ class TransactionMapperTest {
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.setAcquirerId("acquirerId");
         transactionEntity.setBranchId("branchId");
-        transactionEntity.setCreatedAt(mock(Timestamp.class));
+        transactionEntity.setCreatedAt(mock(LocalDateTime.class));
         transactionEntity.setFunctionType("functionType");
-        transactionEntity.setLastUpdatedAt(mock(Timestamp.class));
+        transactionEntity.setLastUpdatedAt(mock(LocalDateTime.class));
         transactionEntity.setTerminalId("terminalId");
         transactionEntity.setTransactionId("transactionId");
         transactionEntity.setTransactionStatus("transactionStatus");
@@ -47,9 +45,9 @@ class TransactionMapperTest {
         TransactionEntity transactionEntity2 = new TransactionEntity();
         transactionEntity2.setAcquirerId("acquirerId2");
         transactionEntity2.setBranchId("branchId2");
-        transactionEntity2.setCreatedAt(mock(Timestamp.class));
+        transactionEntity2.setCreatedAt(mock(LocalDateTime.class));
         transactionEntity2.setFunctionType("functionType2");
-        transactionEntity2.setLastUpdatedAt(mock(Timestamp.class));
+        transactionEntity2.setLastUpdatedAt(mock(LocalDateTime.class));
         transactionEntity2.setTerminalId("terminalId2");
         transactionEntity2.setTransactionId("transactionId2");
         transactionEntity2.setTransactionStatus("transactionStatus2");
