@@ -14,6 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -175,24 +178,5 @@ class TransactionServiceImplTest {
     }
 
 
-   /* @Test
-    void testGetAllTransactions() {
-        List<TransactionEntity> transactionList = Arrays.asList(
-                new TransactionEntity("1", "type1", "acquirer1", "branch1", "terminal1", "status1", LocalDateTime.now(), LocalDateTime.now()),
-                new TransactionEntity("2", "type2", "acquirer2", "branch2", "terminal2", "status2", LocalDateTime.now(), LocalDateTime.now()),
-                new TransactionEntity("3", "type3", "acquirer3", "branch3", "terminal3", "status3", LocalDateTime.now(), LocalDateTime.now())
-        );
-
-        when(transactionRepository.findAll().list()).thenReturn(Uni.createFrom().item(transactionList));
-
-        UniAssertSubscriber<List<TransactionEntity>> subscriber = transactionService.getAllTransactions()
-                .subscribe().withSubscriber(UniAssertSubscriber.create());
-
-        subscriber.assertCompleted();
-
-        assertEquals(transactionList, subscriber.getItem());
-
-        verify(transactionRepository).findAll().list();
-    }*/
 
 }

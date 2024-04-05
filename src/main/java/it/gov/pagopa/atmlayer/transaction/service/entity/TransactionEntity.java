@@ -13,7 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -44,10 +44,10 @@ public class TransactionEntity extends PanacheEntityBase implements Serializable
 
     @Column(name = "created_at")
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
     @Column(name = "last_updated_at")
     @UpdateTimestamp
-    private LocalDateTime lastUpdatedAt;
+    private Timestamp lastUpdatedAt;
 
 }

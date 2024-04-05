@@ -1,9 +1,10 @@
 package it.gov.pagopa.atmlayer.transaction.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -19,8 +20,10 @@ public class TransactionDTO {
     private String branchId;
     private String terminalId;
     private String transactionStatus;
-    @Schema(example = "2000-04-25T15:50:50.000000")
-    private LocalDateTime createdAt;
-    @Schema(example = "2000-04-25T15:50:50.000000")
-    private LocalDateTime lastUpdatedAt;
+    @Schema(example = "2023-11-03T14:18:36.635+02:00")
+    @JsonFormat(timezone = "Europe/Rome")
+    private Timestamp createdAt;
+    @Schema(example = "2023-11-03T14:18:36.635+02:00")
+    @JsonFormat(timezone = "Europe/Rome")
+    private Timestamp lastUpdatedAt;
 }

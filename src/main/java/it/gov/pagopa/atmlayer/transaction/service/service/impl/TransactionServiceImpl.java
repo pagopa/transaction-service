@@ -15,6 +15,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class TransactionServiceImpl implements TransactionService {
                         transactionFound.setTransactionStatus(transactionUpdateDTO.getTransactionStatus());
                         transactionFound.setFunctionType(transactionUpdateDTO.getFunctionType());
                     }
-                    transactionFound.setLastUpdatedAt(LocalDateTime.now());
+                    transactionFound.setLastUpdatedAt(new Timestamp(System.currentTimeMillis()));
                     return transactionRepository.persist(transactionFound);
                 }));
     }
@@ -76,10 +77,10 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @WithSession
-    public Uni<PageInfo<TransactionEntity>> searchTransactions(int pageIndex, int pageSize, String transactionId, String functionType, String acquirerId, String branchId, String terminalId, String transacionStatus, LocalDateTime startTime, LocalDateTime endTime) {
+    public Uni<PageInfo<TransactionEntity>> searchTransactions(int pageIndex, int pageSize, String transactionId, String functionType, String acquirerId, String branchId, String terminalId, String transacionStatus, Timestamp startTime, Timestamp endTime) {
         if ((startTime == null && endTime != null) || (startTime != null && endTime == null)) {
             throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.BOTH_STARTTIME_AND_ENDTIME_SHOULD_BE_PRESENT);
-        } else if (startTime != null && startTime.isAfter(endTime)) {
+        } else if (startTime != null && startTime.after(endTime)) {
             throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.STARTTIME_CANNOT_BE_GREATER_THAN_ENDTIME);
         }
         Map<String, Object> filters = new HashMap<>();

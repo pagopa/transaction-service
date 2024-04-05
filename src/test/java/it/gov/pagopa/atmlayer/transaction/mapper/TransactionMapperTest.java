@@ -6,6 +6,7 @@ import it.gov.pagopa.atmlayer.transaction.service.entity.TransactionEntity;
 import it.gov.pagopa.atmlayer.transaction.service.mapper.TransactionMapperImpl;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -35,9 +36,9 @@ class TransactionMapperTest {
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.setAcquirerId("acquirerId");
         transactionEntity.setBranchId("branchId");
-        transactionEntity.setCreatedAt(mock(LocalDateTime.class));
+        transactionEntity.setCreatedAt(mock(Timestamp.class));
         transactionEntity.setFunctionType("functionType");
-        transactionEntity.setLastUpdatedAt(mock(LocalDateTime.class));
+        transactionEntity.setLastUpdatedAt(mock(Timestamp.class));
         transactionEntity.setTerminalId("terminalId");
         transactionEntity.setTransactionId("transactionId");
         transactionEntity.setTransactionStatus("transactionStatus");
@@ -45,9 +46,9 @@ class TransactionMapperTest {
         TransactionEntity transactionEntity2 = new TransactionEntity();
         transactionEntity2.setAcquirerId("acquirerId2");
         transactionEntity2.setBranchId("branchId2");
-        transactionEntity2.setCreatedAt(mock(LocalDateTime.class));
+        transactionEntity2.setCreatedAt(mock(Timestamp.class));
         transactionEntity2.setFunctionType("functionType2");
-        transactionEntity2.setLastUpdatedAt(mock(LocalDateTime.class));
+        transactionEntity2.setLastUpdatedAt(mock(Timestamp.class));
         transactionEntity2.setTerminalId("terminalId2");
         transactionEntity2.setTransactionId("transactionId2");
         transactionEntity2.setTransactionStatus("transactionStatus2");
