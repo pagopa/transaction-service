@@ -6,6 +6,7 @@ import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionUpdateDTO;
 import it.gov.pagopa.atmlayer.transaction.service.entity.TransactionEntity;
 import it.gov.pagopa.atmlayer.transaction.service.exception.AtmLayerException;
+import it.gov.pagopa.atmlayer.transaction.service.model.PageInfo;
 import it.gov.pagopa.atmlayer.transaction.service.repository.TransactionRepository;
 import it.gov.pagopa.atmlayer.transaction.service.service.impl.TransactionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,6 +179,31 @@ class TransactionServiceImplTest {
                 .assertFailedWith(AtmLayerException.class, "There is no such transaction id in database");
     }
 
+    @Test
+    void testSearchTransactions() {
+        List<TransactionEntity> transactionsList = new ArrayList<>();
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionsList.add(transactionEntity);
+        int pageIndex = 0;
+        int pageSize = 10;
+        String transactionId = "123";
+        String functionType = "TYPE";
+        String acquirerId = "ACQ";
+        String branchId = "BRANCH";
+        String terminalId = "TERMINAL";
+        String transacionStatus = "STATUS";
+        Timestamp startTime = Timestamp.valueOf("2024-01-01 00:00:00");
+        Timestamp endTime = Timestamp.valueOf("2024-12-31 23:59:59");
 
+        PageInfo<TransactionEntity> expectedResult = new PageInfo<>(0, 10, 1, 1, transactionsList);
+
+        when(transactionRepository.findByFilters(anyMap(), eq(pageIndex), eq(pageSize))).thenReturn(Uni.createFrom().item(expectedResult));
+
+        Uni<PageInfo<TransactionEntity>> result = transactionService.searchTransactions(pageIndex, pageSize, transactionId, functionType, acquirerId, branchId, terminalId, transacionStatus, startTime, endTime);
+
+        result.subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted()
+                .assertItem(expectedResult);
+    }
 
 }
