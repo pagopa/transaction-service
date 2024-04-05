@@ -3,6 +3,7 @@ package it.gov.pagopa.atmlayer.transaction.service;
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionUpdateDTO;
 import it.gov.pagopa.atmlayer.transaction.service.entity.TransactionEntity;
 import it.gov.pagopa.atmlayer.transaction.service.exception.AtmLayerException;
 import it.gov.pagopa.atmlayer.transaction.service.repository.TransactionRepository;
@@ -65,6 +66,87 @@ class TransactionServiceImplTest {
     }
 
     @Test
+    void testUpdate() {
+        TransactionUpdateDTO dto = new TransactionUpdateDTO();
+        dto.setTransactionId("transactionId");
+        dto.setTransactionStatus("newStatus");
+        dto.setFunctionType("newFunction");
+
+        TransactionEntity existingTransaction = new TransactionEntity();
+        existingTransaction.setTransactionId(dto.getTransactionId());
+
+        when(transactionRepository.findById(any(String.class))).thenReturn(Uni.createFrom().item(existingTransaction));
+        when(transactionRepository.persist(any(TransactionEntity.class))).thenReturn(Uni.createFrom().item(existingTransaction));
+
+        transactionService.updateTransactionEntity(dto)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted()
+                .assertItem(existingTransaction);
+
+        verify(transactionRepository).persist(existingTransaction);
+    }
+
+    @Test
+    void testUpdateTransactionEntitySuccessPartialStatusOnly() {
+        TransactionUpdateDTO dto = new TransactionUpdateDTO();
+        dto.setTransactionId("transactionId");
+        dto.setTransactionStatus("newStatus");
+        dto.setFunctionType("");
+
+        TransactionEntity existingTransaction = new TransactionEntity();
+        existingTransaction.setTransactionId(dto.getTransactionId());
+
+        when(transactionRepository.findById(any(String.class))).thenReturn(Uni.createFrom().item(existingTransaction));
+        when(transactionRepository.persist(any(TransactionEntity.class))).thenReturn(Uni.createFrom().item(existingTransaction));
+
+        transactionService.updateTransactionEntity(dto)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted()
+                .assertItem(existingTransaction);
+
+        verify(transactionRepository).persist(existingTransaction);
+    }
+
+    @Test
+    void testUpdateTransactionEntitySuccessPartialFunctionTypeOnly() {
+        TransactionUpdateDTO dto = new TransactionUpdateDTO();
+        dto.setTransactionId("transactionId");
+        dto.setTransactionStatus("");
+        dto.setFunctionType("newFunction");
+
+        TransactionEntity existingTransaction = new TransactionEntity();
+        existingTransaction.setTransactionId(dto.getTransactionId());
+
+        when(transactionRepository.findById(any(String.class))).thenReturn(Uni.createFrom().item(existingTransaction));
+        when(transactionRepository.persist(any(TransactionEntity.class))).thenReturn(Uni.createFrom().item(existingTransaction));
+
+        transactionService.updateTransactionEntity(dto)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted()
+                .assertItem(existingTransaction);
+
+        verify(transactionRepository).persist(existingTransaction);
+    }
+
+    @Test
+    void testUpdateTransactionEntityErrorAllFieldsBlank() {
+        TransactionUpdateDTO dto = new TransactionUpdateDTO();
+        dto.setTransactionId("transactionId");
+        dto.setTransactionStatus("");
+        dto.setFunctionType("");
+
+        when(transactionRepository.findById(any(String.class))).thenReturn(Uni.createFrom().item(new TransactionEntity()));
+
+        transactionService.updateTransactionEntity(dto)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertFailed()
+                .assertFailedWith(AtmLayerException.class, "All the fields that can be updated are blank"); // Correggi qui il messaggio atteso
+
+        verify(transactionRepository, never()).persist(any(TransactionEntity.class));
+    }
+
+
+    @Test
     void testFindById() {
         String transactionId = "existentId";
         TransactionEntity transactionEntity = new TransactionEntity();
@@ -91,7 +173,6 @@ class TransactionServiceImplTest {
                 .assertFailed()
                 .assertFailedWith(AtmLayerException.class, "There is no such transaction id in database");
     }
-
 
 
    /* @Test
