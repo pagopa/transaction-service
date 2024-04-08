@@ -146,7 +146,7 @@ class TransactionServiceImplTest {
         transactionService.updateTransactionEntity(dto)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertFailed()
-                .assertFailedWith(AtmLayerException.class, "All the fields that can be updated are blank"); // Correggi qui il messaggio atteso
+                .assertFailedWith(AtmLayerException.class, "All the fields that can be updated are blank");
 
         verify(transactionRepository, never()).persist(any(TransactionEntity.class));
     }
