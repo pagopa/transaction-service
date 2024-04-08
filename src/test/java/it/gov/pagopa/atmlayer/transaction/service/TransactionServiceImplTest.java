@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -178,6 +179,38 @@ class TransactionServiceImplTest {
                 .assertFailed()
                 .assertFailedWith(AtmLayerException.class, "There is no such transaction id in database");
     }
+
+    @Test
+    void testSearchTransactionsWithStartTimeOrEndTimeNull() {
+        int pageIndex = 0;
+        int pageSize = 10;
+        String transactionId = "123";
+        String functionType = "TYPE";
+        String acquirerId = "ACQ";
+        String branchId = "BRANCH";
+        String terminalId = "TERMINAL";
+        String transactionStatus = "STATUS";
+        Timestamp endTime = Timestamp.valueOf("2024-12-31 23:59:59");
+
+        assertThrows(AtmLayerException.class, () ->
+                transactionService.searchTransactions(
+                        pageIndex, pageSize, transactionId, functionType, acquirerId,
+                        branchId, terminalId, transactionStatus, null, endTime).await().indefinitely());
+
+        Timestamp startTime = Timestamp.valueOf("2024-01-01 00:00:00");
+
+        assertThrows(AtmLayerException.class, () ->
+                transactionService.searchTransactions(
+                        pageIndex, pageSize, transactionId, functionType, acquirerId,
+                        branchId, terminalId, transactionStatus, startTime, null).await().indefinitely());
+
+        Timestamp invalidStartTime = Timestamp.valueOf("2025-01-01 00:00:00");
+        assertThrows(AtmLayerException.class, () ->
+                transactionService.searchTransactions(
+                        pageIndex, pageSize, transactionId, functionType, acquirerId,
+                        branchId, terminalId, transactionStatus, invalidStartTime, endTime).await().indefinitely());
+    }
+
 
     @Test
     void testSearchTransactions() {
