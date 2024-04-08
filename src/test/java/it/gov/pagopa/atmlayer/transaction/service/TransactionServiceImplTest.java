@@ -1,5 +1,6 @@
 package it.gov.pagopa.atmlayer.transaction.service;
 
+import io.quarkus.hibernate.reactive.panache.PanacheQuery;
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
@@ -237,6 +238,24 @@ class TransactionServiceImplTest {
         result.subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted()
                 .assertItem(expectedResult);
+    }
+
+    @Test
+    void testGetAllTransactions() {
+        List<TransactionEntity> transactionsList = new ArrayList<>();
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionsList.add(transactionEntity);
+
+        PanacheQuery<TransactionEntity> panacheQuery = mock(PanacheQuery.class);
+
+        when(transactionRepository.findAll()).thenReturn(panacheQuery);
+        when(panacheQuery.list()).thenReturn(Uni.createFrom().item(transactionsList));
+
+        Uni<List<TransactionEntity>> result = transactionService.getAllTransactions();
+
+        result.subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted()
+                .assertItem(transactionsList);
     }
 
 }
