@@ -2,6 +2,8 @@ package it.gov.pagopa.atmlayer.transaction.exception;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.mutiny.CompositeException;
+import it.gov.pagopa.atmlayer.transaction.service.enums.AppErrorCodeEnum;
+import it.gov.pagopa.atmlayer.transaction.service.exception.AtmLayerException;
 import it.gov.pagopa.atmlayer.transaction.service.exception.mapper.GlobalExceptionMapperImpl;
 import it.gov.pagopa.atmlayer.transaction.service.model.ATMLayerErrorResponse;
 import it.gov.pagopa.atmlayer.transaction.service.model.ATMLayerValidationErrorResponse;
@@ -20,6 +22,7 @@ import org.slf4j.Logger;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
 class GlobalExceptionMapperImplTest {
@@ -45,6 +48,24 @@ class GlobalExceptionMapperImplTest {
         ConstraintViolationException exception = new ConstraintViolationException(message, constraintViolations);
         RestResponse<ATMLayerValidationErrorResponse> response = globalExceptionMapper.constraintViolationExceptionMapper(exception);
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    void testAtmLayerExceptionMapperWithAtmLayerException() {
+        AppErrorCodeEnum errorCodeEnum = AppErrorCodeEnum.ATMLTS_500;
+
+        AtmLayerException atmLayerException = new AtmLayerException(Response.Status.BAD_REQUEST, errorCodeEnum);
+
+        RestResponse<ATMLayerErrorResponse> response = globalExceptionMapper.genericExceptionMapper(atmLayerException);
+
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        ATMLayerErrorResponse errorResponse = response.getEntity();
+
+        assertNotNull(errorResponse);
+        assertEquals(errorCodeEnum.getErrorMessage(), errorResponse.getMessage());
+        assertEquals(errorCodeEnum.getType().name(), errorResponse.getType());
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), errorResponse.getStatusCode());
+        assertEquals(errorCodeEnum.getErrorCode(), errorResponse.getErrorCode());
     }
 
     @Test

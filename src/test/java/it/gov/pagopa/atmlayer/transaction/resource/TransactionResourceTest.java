@@ -212,4 +212,5 @@ class TransactionResourceTest {
         verify(transactionService, times(1)).getAllTransactions();
         verify(transactionMapper, times(1)).toDTOList(transactionsList);
     }
+
 }

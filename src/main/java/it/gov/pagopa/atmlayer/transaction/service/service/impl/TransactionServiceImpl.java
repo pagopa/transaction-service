@@ -36,7 +36,8 @@ public class TransactionServiceImpl implements TransactionService {
                     if (transaction != null) {
                         throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.TRANSACTION_ID_ALREADY_EXISTS);
                     }
-                    return transactionRepository.persist(transactionEntity);
+                    Uni<TransactionEntity> response = transactionRepository.persist(transactionEntity);
+                    return response;
                 }));
     }
 
@@ -57,14 +58,15 @@ public class TransactionServiceImpl implements TransactionService {
                         transactionFound.setFunctionType(transactionUpdateDTO.getFunctionType());
                     }
                     transactionFound.setLastUpdatedAt(new Timestamp(System.currentTimeMillis()));
-                    return transactionRepository.persist(transactionFound);
+                    Uni<TransactionEntity> response = transactionRepository.persist(transactionFound);
+                    return response;
                 }));
     }
 
     @Override
     @WithSession
     public Uni<TransactionEntity> findById(String transactionId) {
-        return this.transactionRepository.findById(transactionId)
+        Uni<TransactionEntity> response = this.transactionRepository.findById(transactionId)
                 .onItem()
                 .ifNull()
                 .switchTo(() -> {
@@ -72,6 +74,7 @@ public class TransactionServiceImpl implements TransactionService {
                 })
                 .onItem()
                 .transformToUni(Unchecked.function(x -> Uni.createFrom().item(x)));
+        return response;
     }
 
     @Override
@@ -94,13 +97,15 @@ public class TransactionServiceImpl implements TransactionService {
         filters.remove(null);
         filters.values().removeAll(Collections.singleton(null));
         filters.values().removeAll(Collections.singleton(""));
-        return transactionRepository.findByFilters(filters, pageIndex, pageSize);
+        Uni<PageInfo<TransactionEntity>> response = transactionRepository.findByFilters(filters, pageIndex, pageSize);
+        return response;
     }
 
     @Override
     @WithSession
     public Uni<List<TransactionEntity>> getAllTransactions() {
-        return this.transactionRepository.findAll().list();
+        Uni<List<TransactionEntity>> response = this.transactionRepository.findAll().list();
+        return response;
     }
 
 }

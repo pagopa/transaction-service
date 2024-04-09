@@ -28,6 +28,7 @@ class TransactionMapperTest {
     void testToEntityInsertion() {
         TransactionMapperImpl transactionMapperImpl = new TransactionMapperImpl();
         TransactionEntity actualToEntityInsertionResult = transactionMapperImpl.toEntityInsertion(new TransactionInsertionDTO("transactionId", "functionType", "acquirerId", "branchId", "terminalId", "transactionStatus"));
+
         assertEquals("acquirerId", actualToEntityInsertionResult.getAcquirerId());
         assertEquals("terminalId", actualToEntityInsertionResult.getTerminalId());
         assertEquals("transactionId", actualToEntityInsertionResult.getTransactionId());
@@ -63,6 +64,7 @@ class TransactionMapperTest {
         ArrayList<TransactionEntity> list = new ArrayList<>();
         list.add(transactionEntity2);
         list.add(transactionEntity);
+
         assertEquals(2, transactionMapperImpl.toDTOList(list).size());
     }
 
@@ -74,7 +76,6 @@ class TransactionMapperTest {
 
     @Test
     void testToDtoPaged() {
-
         TransactionEntity transactionEntity1 = mock(TransactionEntity.class);
         when(transactionEntity1.getAcquirerId()).thenReturn("acquirerId");
 
@@ -93,6 +94,18 @@ class TransactionMapperTest {
         assertEquals(2, resultPageInfo.getResults().size());
         assertEquals("acquirerId", resultPageInfo.getResults().get(0).getAcquirerId());
         assertEquals("acquirerId2", resultPageInfo.getResults().get(1).getAcquirerId());
-
     }
+
+    @Test
+    void testToDTOWithNullInput() {
+        TransactionDTO result = transactionMapper.toDTO(null);
+        assertNull(result);
+    }
+
+    @Test
+    void testToDtoPagedWithNullInput() {
+        PageInfo<TransactionDTO> resultPageInfo = transactionMapper.toDtoPaged(null);
+        assertNull(resultPageInfo);
+    }
+
 }

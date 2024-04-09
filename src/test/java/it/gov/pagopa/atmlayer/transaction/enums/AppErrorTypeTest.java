@@ -11,7 +11,6 @@ class AppErrorTypeTest {
 
     @Test
     void testEnumContainsExpectedValues() {
-        // Check that each expected value is present in the enum
         assertTrue(contains("GENERIC"));
         assertTrue(contains("TRANSACTION_ID_NOT_FOUND"));
         assertTrue(contains("CONSTRAINT_VIOLATION"));
