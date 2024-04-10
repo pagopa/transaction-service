@@ -34,20 +34,17 @@ public class GlobalExceptionMapperImpl {
     public RestResponse<ATMLayerValidationErrorResponse> constraintViolationExceptionMapper(ConstraintViolationException exception) {
         String message = "Validation Error on Payload";
         logger.error("Validation Error on Payload: ", exception);
-        RestResponse<ATMLayerValidationErrorResponse> response = buildErrorResponse(exception.getConstraintViolations(), message);
-        return response;
+        return buildErrorResponse(exception.getConstraintViolations(), message);
     }
 
     @ServerExceptionMapper
     public RestResponse<ATMLayerErrorResponse> genericExceptionMapper(AtmLayerException exception) {
-        RestResponse<ATMLayerErrorResponse> response = buildErrorResponse(exception);
-        return response;
+        return buildErrorResponse(exception);
     }
 
     @ServerExceptionMapper
     public RestResponse<ATMLayerErrorResponse> compositeException(CompositeException exception) {
-        RestResponse<ATMLayerErrorResponse> response = buildErrorResponse(new AtmLayerException(exception));
-        return response;
+        return buildErrorResponse(new AtmLayerException(exception));
     }
 
 
@@ -55,8 +52,7 @@ public class GlobalExceptionMapperImpl {
     public RestResponse<ATMLayerErrorResponse> genericExceptionMapper(Exception exception) {
         String message = "Generic Error";
         logger.error("Generic error found: ", exception);
-        RestResponse<ATMLayerErrorResponse> response = buildErrorResponse(message);
-        return response;
+        return buildErrorResponse(message);
     }
 
     private RestResponse<ATMLayerErrorResponse> buildErrorResponse(AtmLayerException e) {
@@ -66,17 +62,15 @@ public class GlobalExceptionMapperImpl {
                 .message(e.getMessage())
                 .errorCode(e.getErrorCode())
                 .build();
-        RestResponse<ATMLayerErrorResponse> response = RestResponse.status(Response.Status.fromStatusCode(e.getStatusCode()), errorResponse);
-        return response;
+        return RestResponse.status(Response.Status.fromStatusCode(e.getStatusCode()), errorResponse);
     }
 
     private RestResponse<ATMLayerErrorResponse> buildErrorResponse(String message) {
-        RestResponse<ATMLayerErrorResponse> response = RestResponse.status(Response.Status.INTERNAL_SERVER_ERROR, ATMLayerErrorResponse.builder()
+        return RestResponse.status(Response.Status.INTERNAL_SERVER_ERROR, ATMLayerErrorResponse.builder()
                 .type(Response.Status.INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .statusCode(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
                 .message(message)
                 .build());
-        return response;
     }
 
     private RestResponse<ATMLayerValidationErrorResponse> buildErrorResponse(Set<ConstraintViolation<?>> errors, String message) {
@@ -87,7 +81,6 @@ public class GlobalExceptionMapperImpl {
                 .errors(errorMessages)
                 .message(message)
                 .build();
-        RestResponse<ATMLayerValidationErrorResponse> response = RestResponse.status(Response.Status.BAD_REQUEST, payload);
-        return response;
+        return RestResponse.status(Response.Status.BAD_REQUEST, payload);
     }
 }

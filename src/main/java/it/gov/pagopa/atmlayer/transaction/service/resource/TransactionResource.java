@@ -42,10 +42,9 @@ public class TransactionResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Uni<TransactionDTO> insert(@RequestBody(required = true) @Valid TransactionInsertionDTO transactionInsertionDTO) {
         TransactionEntity transactionEntity = transactionMapper.toEntityInsertion(transactionInsertionDTO);
-        Uni<TransactionDTO> response = this.transactionService.insertTransactionEntity(transactionEntity)
+        return this.transactionService.insertTransactionEntity(transactionEntity)
                 .onItem()
                 .transformToUni(insertedTransaction -> Uni.createFrom().item(this.transactionMapper.toDTO(insertedTransaction)));
-        return response;
     }
 
     @PUT
@@ -53,10 +52,9 @@ public class TransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Uni<TransactionDTO> update(@RequestBody(required = true) @Valid TransactionUpdateDTO transactionUpdateDTO) {
-        Uni<TransactionDTO> response = transactionService.updateTransactionEntity(transactionUpdateDTO)
+        return transactionService.updateTransactionEntity(transactionUpdateDTO)
                 .onItem()
                 .transformToUni(updatedTransaction -> Uni.createFrom().item(transactionMapper.toDTO(updatedTransaction)));
-        return response;
     }
 
     @GET
@@ -72,7 +70,7 @@ public class TransactionResource {
                                                 @QueryParam("transactionStatus") String transactionStatus,
                                                 @QueryParam("startTime") @Schema(example = "yyyy-mm-dd hh:mm:ss") Timestamp startTime,
                                                 @QueryParam("endTime") @Schema(example = "yyyy-mm-dd hh:mm:ss") Timestamp endTime) {
-        Uni<PageInfo<TransactionDTO>> response = this.transactionService.searchTransactions(pageIndex, pageSize, transactionId, functionType, acquirerId, branchId, terminalId, transactionStatus, startTime, endTime)
+        return this.transactionService.searchTransactions(pageIndex, pageSize, transactionId, functionType, acquirerId, branchId, terminalId, transactionStatus, startTime, endTime)
                 .onItem()
                 .transform(Unchecked.function(pagedList -> {
                     if (pagedList.getResults().isEmpty()) {
@@ -80,13 +78,12 @@ public class TransactionResource {
                     }
                     return transactionMapper.toDtoPaged(pagedList);
                 }));
-        return response;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Uni<List<TransactionDTO>> getAll() {
-        Uni<List<TransactionDTO>> response = this.transactionService.getAllTransactions()
+        return this.transactionService.getAllTransactions()
                 .onItem()
                 .transform(Unchecked.function(list -> {
                     if (list.isEmpty()) {
@@ -94,7 +91,6 @@ public class TransactionResource {
                     }
                     return transactionMapper.toDTOList(list);
                 }));
-        return response;
     }
 
 }

@@ -19,7 +19,7 @@ public class TransactionRepository implements PanacheRepositoryBase<TransactionE
         String queryFilters = params.keySet().stream()
                 .map(key -> "startTime".equals(key) ? "t.createdAt >= :" + key : ("endTime".equals(key) ? "t.createdAt <= :" + key : "t." + key + " = :" + key))
                 .collect(Collectors.joining(" and "));
-        //  "t.branchId = :branchId and ... and t.createdAt >= :startTime and t.createdAt <= :endTime"
+//          "t.branchId = :branchId and ... and t.createdAt >= :startTime and t.createdAt <= :endTime"
 
         PanacheQuery<TransactionEntity> queryResult = find(("select t from TransactionEntity t")
                 .concat(queryFilters.isBlank() ? "" : " where " + queryFilters)
