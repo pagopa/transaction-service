@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @Singleton
-public class ConstraintViolationMappingUtilsImpl implements ConstraintViolationMappingUtils{
+public class ConstraintViolationMappingUtilsImpl implements ConstraintViolationMappingUtils {
 
     public List<String> extractErrorMessages(Set<ConstraintViolation<?>> errors) {
         return errors.stream().map(this::extractErrorMessage).toList();

@@ -10,4 +10,5 @@ public interface ConstraintViolationMappingUtils {
     List<String> extractErrorMessages(Set<ConstraintViolation<?>> errors);
 
     String extractErrorMessage(ConstraintViolation<?> error);
+
 }
