@@ -1,9 +1,11 @@
 package it.gov.pagopa.atmlayer.transaction.service.service.impl;
 
+import com.sun.istack.logging.Logger;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.unchecked.Unchecked;
+import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionDeleteDTO;
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionUpdateDTO;
 import it.gov.pagopa.atmlayer.transaction.service.entity.TransactionEntity;
 import it.gov.pagopa.atmlayer.transaction.service.enums.AppErrorCodeEnum;
@@ -14,6 +16,7 @@ import it.gov.pagopa.atmlayer.transaction.service.service.TransactionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -22,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @ApplicationScoped
+@Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
     @Inject
@@ -62,16 +66,12 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    @WithSession
-    public Uni<TransactionEntity> findById(String transactionId) {
-        return this.transactionRepository.findById(transactionId)
+    @WithTransaction
+    public Uni<Boolean> deleteTransactions(TransactionDeleteDTO transactionDeleteDTO) {
+        log.info("Deleting Transaction with id {}", transactionDeleteDTO.getTransactionId());
+        return this.findById(transactionDeleteDTO.getTransactionId())
                 .onItem()
-                .ifNull()
-                .switchTo(() -> {
-                    throw new AtmLayerException(Response.Status.NOT_FOUND, AppErrorCodeEnum.TRANSACTION_NOT_FOUND);
-                })
-                .onItem()
-                .transformToUni(Unchecked.function(x -> Uni.createFrom().item(x)));
+                .transformToUni(x -> this.transactionRepository.deleteById(transactionDeleteDTO.getTransactionId()));
     }
 
     @Override
@@ -101,6 +101,19 @@ public class TransactionServiceImpl implements TransactionService {
     @WithSession
     public Uni<List<TransactionEntity>> getAllTransactions() {
         return this.transactionRepository.findAll().list();
+    }
+
+    @Override
+    @WithSession
+    public Uni<TransactionEntity> findById(String transactionId) {
+        return this.transactionRepository.findById(transactionId)
+                .onItem()
+                .ifNull()
+                .switchTo(() -> {
+                    throw new AtmLayerException(Response.Status.NOT_FOUND, AppErrorCodeEnum.TRANSACTION_NOT_FOUND);
+                })
+                .onItem()
+                .transformToUni(Unchecked.function(x -> Uni.createFrom().item(x)));
     }
 
 }
