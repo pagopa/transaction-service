@@ -3,7 +3,6 @@ package it.gov.pagopa.atmlayer.transaction.service.resource;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.unchecked.Unchecked;
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionDTO;
-import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionDeleteDTO;
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionInsertionDTO;
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionUpdateDTO;
 import it.gov.pagopa.atmlayer.transaction.service.entity.TransactionEntity;
@@ -59,11 +58,11 @@ public class TransactionResource {
     }
 
     @DELETE
-    @Path("/delete")
+    @Path("/delete/{transactionId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Void> delete(@RequestBody(required = true) @Valid TransactionDeleteDTO transactionDeleteDTO) {
-        return this.transactionService.deleteTransactions(transactionDeleteDTO)
+    public Uni<Void> delete(@PathParam("transactionId") String transactionId) {
+        return this.transactionService.deleteTransactions(transactionId)
                 .onItem()
                 .ignore()
                 .andSwitchTo(Uni.createFrom().voidItem());

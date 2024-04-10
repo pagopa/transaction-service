@@ -1,11 +1,11 @@
 package it.gov.pagopa.atmlayer.transaction.service.service.impl;
 
-import com.sun.istack.logging.Logger;
+import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.quarkus.scheduler.Scheduled;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.unchecked.Unchecked;
-import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionDeleteDTO;
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionUpdateDTO;
 import it.gov.pagopa.atmlayer.transaction.service.entity.TransactionEntity;
 import it.gov.pagopa.atmlayer.transaction.service.enums.AppErrorCodeEnum;
@@ -19,10 +19,12 @@ import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Slf4j
@@ -30,6 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Inject
     TransactionRepository transactionRepository;
+
 
     @Override
     @WithTransaction
@@ -67,11 +70,11 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @WithTransaction
-    public Uni<Boolean> deleteTransactions(TransactionDeleteDTO transactionDeleteDTO) {
-        log.info("Deleting Transaction with id {}", transactionDeleteDTO.getTransactionId());
-        return this.findById(transactionDeleteDTO.getTransactionId())
+    public Uni<Boolean> deleteTransactions(String transactionId) {
+        log.info("Deleting Transaction with id {}", transactionId);
+        return this.findById(transactionId)
                 .onItem()
-                .transformToUni(x -> this.transactionRepository.deleteById(transactionDeleteDTO.getTransactionId()));
+                .transformToUni(x -> this.transactionRepository.deleteById(transactionId));
     }
 
     @Override
@@ -114,6 +117,23 @@ public class TransactionServiceImpl implements TransactionService {
                 })
                 .onItem()
                 .transformToUni(Unchecked.function(x -> Uni.createFrom().item(x)));
+    }
+
+    @Scheduled(every = "3h")
+    @WithTransaction
+    public Uni<Void> scheduledDelete() {
+        return transactionRepository.findOlderThanThreeMonths()
+                .onItem().transformToUni(entities -> {
+                    if (entities.isEmpty()) {
+                        return Uni.createFrom().voidItem();
+                    } else {
+                        return Uni.combine().all().unis(
+                                entities.stream()
+                                        .map(entity -> transactionRepository.delete(entity))
+                                        .toList()
+                        ).discardItems();
+                    }
+                }).replaceWith(Uni.createFrom().voidItem());
     }
 
 }
