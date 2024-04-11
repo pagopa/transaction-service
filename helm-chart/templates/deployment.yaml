@@ -60,6 +60,7 @@ spec:
               value: "{{ .Values.transactionService.swaggerPath }}"
             - name: TRANSACTION_SERVICE_HEALTH_PATH
               value: "{{ .Values.transactionService.healthPath }}"
+            {{- if .Values.database.credentialsSecretEnabled }}
             - name: TRANSACTION_SERVICE_DB_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -70,6 +71,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.database.credentialsSecretName }}
                   key: {{ .Values.database.credentialsSecretKeys.password }}
+            {{- end }}
           volumeMounts:
           {{- if .Values.secretProviderClass.enabled }}
           - name: secrets-store-inline
