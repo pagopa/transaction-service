@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -152,6 +153,22 @@ class TransactionServiceImplTest {
         verify(transactionRepository, never()).persist(any(TransactionEntity.class));
     }
 
+    @Test
+    void testDeleteTransactionsOK() {
+        String transactionId = "transactionId";
+        TransactionEntity transaction = new TransactionEntity();
+
+        when(transactionRepository.findById(transactionId)).thenReturn(Uni.createFrom().item(transaction));
+        when(transactionRepository.deleteById(transactionId)).thenReturn(Uni.createFrom().item(true));
+
+        transactionService.deleteTransactions(transactionId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted().assertItem(true);
+
+        verify(transactionRepository, times(1)).findById(transactionId);
+        verify(transactionRepository, times(1)).deleteById(transactionId);
+    }
+
 
     @Test
     void testFindById() {
@@ -256,6 +273,38 @@ class TransactionServiceImplTest {
         result.subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted()
                 .assertItem(transactionsList);
+    }
+
+    @Test
+    void testScheduledDeleteWithTransactions() {
+        List<TransactionEntity> mockTransactions = List.of(new TransactionEntity(), new TransactionEntity());
+
+        when(transactionRepository.findOldTransactions()).thenReturn(Uni.createFrom().item(mockTransactions));
+        when(transactionRepository.delete(any())).thenReturn(Uni.createFrom().voidItem());
+
+        Uni<Void> result = transactionService.scheduledDelete();
+
+        result.subscribe().with(item -> {
+            System.out.println("Completed with transactions to delete");
+        }, failure -> {
+            throw new AssertionError("Test failed with exception", failure);
+        });
+
+        verify(transactionRepository, times(mockTransactions.size())).delete(any());
+    }
+
+    @Test
+    void testScheduledDeleteWithNoTransactions() {
+        when(transactionRepository.findOldTransactions()).thenReturn(Uni.createFrom().item(Collections.emptyList()));
+
+        Uni<Void> result = transactionService.scheduledDelete();
+        result.subscribe().with(item -> {
+            System.out.println("Completed with no transactions to delete");
+        }, failure -> {
+            throw new AssertionError("Test failed with exception", failure);
+        });
+
+        verify(transactionRepository, never()).delete(any());
     }
 
 }

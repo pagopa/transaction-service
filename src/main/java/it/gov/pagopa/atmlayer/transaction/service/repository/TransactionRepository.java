@@ -1,7 +1,5 @@
 package it.gov.pagopa.atmlayer.transaction.service.repository;
 
-import io.netty.handler.codec.http.multipart.AbstractDiskHttpData;
-import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 import io.quarkus.hibernate.reactive.panache.PanacheQuery;
 import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
 import io.quarkus.panache.common.Page;
@@ -9,6 +7,7 @@ import io.smallrye.mutiny.Uni;
 import it.gov.pagopa.atmlayer.transaction.service.entity.TransactionEntity;
 import it.gov.pagopa.atmlayer.transaction.service.model.PageInfo;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -19,6 +18,16 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TransactionRepository implements PanacheRepositoryBase<TransactionEntity, String> {
+
+    @ConfigProperty(name = "transaction.oldTransactions.monthsToSubtract")
+    Integer timeToSubtract;
+
+    public Uni<List<TransactionEntity>> findOldTransactions() {
+        LocalDateTime dateTime = LocalDateTime.now().minusMonths(timeToSubtract);
+        Timestamp timestamp = Timestamp.valueOf(dateTime);
+        PanacheQuery<TransactionEntity> result = find("select t from TransactionEntity t where t.createdAt < ?1", timestamp);
+        return result.list().onItem().transform(ArrayList::new);
+    }
 
     public Uni<PageInfo<TransactionEntity>> findByFilters(Map<String, Object> params, int pageIndex, int pageSize) {
 
@@ -40,13 +49,6 @@ public class TransactionRepository implements PanacheRepositoryBase<TransactionE
                             .onItem()
                             .transform(list -> new PageInfo<>(pageIndex, pageSize, totalCount, totalPages, list));
                 });
-    }
-
-    public Uni<List<TransactionEntity>> findOlderThanThreeMonths() {
-        LocalDateTime threeMonthsAgoDateTime = LocalDateTime.now().minusMonths(3);
-        Timestamp threeMonthsAgoTimestamp = Timestamp.valueOf(threeMonthsAgoDateTime);
-        PanacheQuery<TransactionEntity> result = find("select t from TransactionEntity t where t.createdAt < ?1", threeMonthsAgoTimestamp);
-        return result.list().onItem().transform(ArrayList::new);
     }
 
 }

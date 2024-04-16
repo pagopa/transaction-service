@@ -90,6 +90,19 @@ class TransactionResourceTest {
     }
 
     @Test
+    void testDelete() {
+        String transactionId = "1";
+        when(transactionService.deleteTransactions(anyString())).thenReturn(Uni.createFrom().item(true));
+        given()
+                .pathParam("transactionId", transactionId)
+                .when()
+                .delete("/api/v1/transaction-service/transactions/delete/{transactionId}")
+                .then()
+                .statusCode(204);
+        verify(transactionService, times(1)).deleteTransactions(transactionId);
+    }
+
+    @Test
     void testSearch() {
         List<TransactionEntity> transactionsList = new ArrayList<>();
         TransactionEntity transactionEntity = new TransactionEntity();
