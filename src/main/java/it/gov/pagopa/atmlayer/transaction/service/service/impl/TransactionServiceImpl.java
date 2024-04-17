@@ -2,6 +2,7 @@ package it.gov.pagopa.atmlayer.transaction.service.service.impl;
 
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.quarkus.scheduler.Scheduled;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.unchecked.Unchecked;
 import it.gov.pagopa.atmlayer.transaction.service.dto.TransactionUpdateDTO;
@@ -26,6 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Inject
     TransactionRepository transactionRepository;
+
 
     @Override
     @WithTransaction
@@ -62,16 +64,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    @WithSession
-    public Uni<TransactionEntity> findById(String transactionId) {
-        return this.transactionRepository.findById(transactionId)
+    @WithTransaction
+    public Uni<Boolean> deleteTransactions(String transactionId) {
+        return this.findById(transactionId)
                 .onItem()
-                .ifNull()
-                .switchTo(() -> {
-                    throw new AtmLayerException(Response.Status.NOT_FOUND, AppErrorCodeEnum.TRANSACTION_NOT_FOUND);
-                })
-                .onItem()
-                .transformToUni(Unchecked.function(x -> Uni.createFrom().item(x)));
+                .transformToUni(x -> this.transactionRepository.deleteById(transactionId));
     }
 
     @Override
@@ -101,6 +98,36 @@ public class TransactionServiceImpl implements TransactionService {
     @WithSession
     public Uni<List<TransactionEntity>> getAllTransactions() {
         return this.transactionRepository.findAll().list();
+    }
+
+    @Override
+    @WithSession
+    public Uni<TransactionEntity> findById(String transactionId) {
+        return this.transactionRepository.findById(transactionId)
+                .onItem()
+                .ifNull()
+                .switchTo(() -> {
+                    throw new AtmLayerException(Response.Status.NOT_FOUND, AppErrorCodeEnum.TRANSACTION_NOT_FOUND);
+                })
+                .onItem()
+                .transformToUni(Unchecked.function(x -> Uni.createFrom().item(x)));
+    }
+
+    @Scheduled(every = "{transaction.cleanup.schedule}")
+    @WithTransaction
+    public Uni<Void> scheduledDelete() {
+        return transactionRepository.findOldTransactions()
+                .onItem().transformToUni(entities -> {
+                    if (entities.isEmpty()) {
+                        return Uni.createFrom().voidItem();
+                    } else {
+                        return Uni.combine().all().unis(
+                                entities.stream()
+                                        .map(entity -> transactionRepository.delete(entity))
+                                        .toList()
+                        ).discardItems();
+                    }
+                }).replaceWith(Uni.createFrom().voidItem());
     }
 
 }

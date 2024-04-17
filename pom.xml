@@ -39,6 +39,10 @@
       <artifactId>quarkus-rest-client-reactive</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-scheduler</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.quarkiverse.openapi.generator</groupId>
       <artifactId>quarkus-openapi-generator</artifactId>
       <version>${quarkus-openapi-generator.version}</version>

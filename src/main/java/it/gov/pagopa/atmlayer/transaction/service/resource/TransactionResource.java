@@ -57,6 +57,17 @@ public class TransactionResource {
                 .transformToUni(updatedTransaction -> Uni.createFrom().item(transactionMapper.toDTO(updatedTransaction)));
     }
 
+    @DELETE
+    @Path("/delete/{transactionId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Uni<Void> delete(@PathParam("transactionId") String transactionId) {
+        return this.transactionService.deleteTransactions(transactionId)
+                .onItem()
+                .ignore()
+                .andSwitchTo(Uni.createFrom().voidItem());
+    }
+
     @GET
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
