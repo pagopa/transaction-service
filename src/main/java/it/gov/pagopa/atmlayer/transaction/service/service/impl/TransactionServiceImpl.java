@@ -15,7 +15,6 @@ import it.gov.pagopa.atmlayer.transaction.service.service.TransactionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -24,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 @ApplicationScoped
-@Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
     @Inject
@@ -68,7 +66,6 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @WithTransaction
     public Uni<Boolean> deleteTransactions(String transactionId) {
-        log.info("Deleting Transaction with id {}", transactionId);
         return this.findById(transactionId)
                 .onItem()
                 .transformToUni(x -> this.transactionRepository.deleteById(transactionId));
