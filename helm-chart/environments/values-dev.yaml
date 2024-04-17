@@ -37,6 +37,10 @@ transactionService:
 
 allowedCrossOrigins: "*"
 
+monthsToSubtract: 3
+
+cleanupSchedule: 3h
+
 secretProviderClass:
   enabled: true
   name: atm-layer-transaction-service-secrets

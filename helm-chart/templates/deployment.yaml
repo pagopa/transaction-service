@@ -60,6 +60,10 @@ spec:
               value: "{{ .Values.transactionService.swaggerPath }}"
             - name: TRANSACTION_SERVICE_HEALTH_PATH
               value: "{{ .Values.transactionService.healthPath }}"
+            - name: MONTHS_TO_SUBTRACT
+              value: "{{ .Values.monthsToSubtract }}"
+            - name: CLEANUP_SCHEDULE
+              value: "{{ .Values.cleanupSchedule }}"
             {{- if .Values.database.credentialsSecretEnabled }}
             - name: TRANSACTION_SERVICE_DB_USERNAME
               valueFrom:
