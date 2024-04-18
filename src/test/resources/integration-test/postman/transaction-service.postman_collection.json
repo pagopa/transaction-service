@@ -29,7 +29,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"transactionId\": \"47\",\r\n  \"functionType\": \"menu\",\r\n  \"acquirerId\": \"111\",\r\n  \"branchId\": \"222\",\r\n  \"terminalId\": \"3\",\r\n  \"transactionStatus\": \"created\"\r\n}",
+					"raw": "{\r\n  \"transactionId\": \"transaction1\",\r\n  \"functionType\": \"menu\",\r\n  \"acquirerId\": \"111\",\r\n  \"branchId\": \"222\",\r\n  \"terminalId\": \"3\",\r\n  \"transactionStatus\": \"created\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -47,6 +47,98 @@
 						"transaction-service",
 						"transactions",
 						"insert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/transaction-service/transactions/search?pageIndex=0&pageSize=10&transactionId=transaction1&functionType=menu&acquirerId=111&branchId=222&terminalId=3&transactionStatus=created&startTime=2024-04-04 14:21:35&endTime=2024-04-18 10:40:00",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"transaction-service",
+						"transactions",
+						"search"
+					],
+					"query": [
+						{
+							"key": "pageIndex",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "transactionId",
+							"value": "transaction1"
+						},
+						{
+							"key": "functionType",
+							"value": "menu"
+						},
+						{
+							"key": "acquirerId",
+							"value": "111"
+						},
+						{
+							"key": "branchId",
+							"value": "222"
+						},
+						{
+							"key": "terminalId",
+							"value": "3"
+						},
+						{
+							"key": "transactionStatus",
+							"value": "created"
+						},
+						{
+							"key": "startTime",
+							"value": "2024-04-04 14:21:35"
+						},
+						{
+							"key": "endTime",
+							"value": "2024-04-18 10:40:00"
+						}
 					]
 				}
 			},
