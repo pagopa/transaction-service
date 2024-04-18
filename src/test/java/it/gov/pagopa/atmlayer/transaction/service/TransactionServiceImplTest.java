@@ -237,12 +237,12 @@ class TransactionServiceImplTest {
         transactionsList.add(transactionEntity);
         int pageIndex = 0;
         int pageSize = 10;
-        String transactionId = "123";
-        String functionType = "TYPE";
-        String acquirerId = "ACQ";
-        String branchId = "BRANCH";
-        String terminalId = "TERMINAL";
-        String transacionStatus = "STATUS";
+        String transactionId = "transactionId";
+        String functionType = "functionType";
+        String acquirerId = "acquirerId";
+        String branchId = "branchId";
+        String terminalId = "terminalId";
+        String transacionStatus = "transacionStatus";
         Timestamp startTime = Timestamp.valueOf("2024-01-01 00:00:00");
         Timestamp endTime = Timestamp.valueOf("2024-12-31 23:59:59");
 
