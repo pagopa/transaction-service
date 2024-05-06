@@ -15,6 +15,7 @@ import it.gov.pagopa.atmlayer.transaction.service.service.TransactionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @ApplicationScoped
+@Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
     @Inject
@@ -32,10 +34,13 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @WithTransaction
     public Uni<TransactionEntity> insertTransactionEntity(TransactionEntity transactionEntity) {
+        String transactionId = transactionEntity.getTransactionId();
+        log.info("Inserting transaction with transactionId : {}", transactionId);
         return this.transactionRepository.findById(transactionEntity.getTransactionId())
                 .onItem()
                 .transformToUni(Unchecked.function(transaction -> {
                     if (transaction != null) {
+                        log.error("transactionId {} already exists.", transactionId);
                         throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.TRANSACTION_ID_ALREADY_EXISTS);
                     }
                     return transactionRepository.persist(transactionEntity);
@@ -45,6 +50,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @WithTransaction
     public Uni<TransactionEntity> updateTransactionEntity(TransactionUpdateDTO transactionUpdateDTO) {
+        String transactionId = transactionUpdateDTO.getTransactionId();
+        log.info("Updating transaction with transactionId : {}", transactionId);
         return this.findById(transactionUpdateDTO.getTransactionId())
                 .onItem()
                 .transformToUni(Unchecked.function(transactionFound -> {
@@ -66,6 +73,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @WithTransaction
     public Uni<Boolean> deleteTransactions(String transactionId) {
+        log.info("Deleting transaction with transactionId : {}", transactionId);
         return this.findById(transactionId)
                 .onItem()
                 .transformToUni(x -> this.transactionRepository.deleteById(transactionId));
