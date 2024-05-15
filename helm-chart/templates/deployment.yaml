@@ -38,6 +38,44 @@ spec:
             - containerPort: {{ .Values.service.port }}
           imagePullPolicy: Always
           env:
+            - name: TZ
+              value: Europe/Rome
+            - name: TRANSACTION_SERVICE_DB_TYPE
+              value: "{{ .Values.database.type }}"
+            - name: TRANSACTION_SERVICE_DB_URL
+              value: "{{ .Values.database.url }}"
+            - name: SERVER_PORT
+              value: "{{ .Values.serverPort }}"
+            - name: TRANSACTION_SERVICE_APPLICATION_BASE_PATH
+              value: "{{ .Values.transactionService.basePath }}"
+            - name: TRANSACTION_SERVICE_ENVIRONMENT
+              value: "{{ .Values.transactionService.environment }}"
+            - name: TRANSACTION_SERVICE_EXECUTION_MODE
+              value: "{{ .Values.transactionService.executionMode }}"
+            - name: ALLOWED_CROSS_ORIGINS
+              value: "{{ .Values.allowedCrossOrigins }}"
+            - name: TRANSACTION_SERVICE_LOG_LEVEL
+              value: "{{ .Values.transactionService.logLevel }}"
+            - name: TRANSACTION_SERVICE_SWAGGER_PATH
+              value: "{{ .Values.transactionService.swaggerPath }}"
+            - name: TRANSACTION_SERVICE_HEALTH_PATH
+              value: "{{ .Values.transactionService.healthPath }}"
+            - name: MONTHS_TO_SUBTRACT
+              value: "{{ .Values.monthsToSubtract }}"
+            - name: CLEANUP_SCHEDULE
+              value: "{{ .Values.cleanupSchedule }}"
+            {{- if .Values.database.credentialsSecretEnabled }}
+            - name: TRANSACTION_SERVICE_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.credentialsSecretName }}
+                  key: {{ .Values.database.credentialsSecretKeys.username }}
+            - name: TRANSACTION_SERVICE_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.credentialsSecretName }}
+                  key: {{ .Values.database.credentialsSecretKeys.password }}
+            {{- end }}
           volumeMounts:
           {{- if .Values.secretProviderClass.enabled }}
           - name: secrets-store-inline

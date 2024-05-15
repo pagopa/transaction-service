@@ -16,8 +16,33 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+database:
+  type: postgresql
+  url: postgresql://pagopa-prod-atm-layer-rds.cluster-cjww3kikqdtw.eu-south-1.rds.amazonaws.com:5432/pagopadb?search_path=atm_layer_model_schema
+  credentialsSecretEnabled: true
+  credentialsSecretName: "pagopa-prod-atm-layer-mil-adapter-database"
+  credentialsSecretKeys:
+    username: DB_USERNAME
+    password: DB_PASSWORD
+
+serverPort: 8080
+
+transactionService:
+  basePath: http://pagopa-uat-atm-layer-transaction-service.pagopa.svc.cluster.local:8080
+  environment: prod
+  executionMode: READ_WRITE
+  logLevel: INFO
+  swaggerPath: /swagger-ui
+  healthPath: /health/v1/transaction-service
+
+allowedCrossOrigins: "*"
+
+monthsToSubtract: 3
+
+cleanupSchedule: 3h
+
 secretProviderClass:
-  enabled: false
+  enabled: true
   name: atm-layer-transaction-service-secrets
   env: prod
 
@@ -26,7 +51,7 @@ serviceAccount:
   create: true
   # Annotations to add to the service account
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::00000000000:role/pagopa-dev-atm-layer-xxxxxx-serviceaccount-role
+    eks.amazonaws.com/role-arn: arn:aws:iam::00000000000:role/pagopa-prod-atm-layer-xxxxxx-serviceaccount-role
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: pagopa-prod-atm-layer-transaction-service
@@ -46,6 +71,9 @@ securityContext: {}
 
 deployment:
   name: pagopa-prod-atm-layer-transaction-service
+  annotations:
+    reloader.stakater.com/auto: "true"
+    secret.reloader.stakater.com/reload: pagopa-prod-atm-layer-transaction-service-database
 
 service:
   name: pagopa-prod-atm-layer-transaction-service
@@ -62,6 +90,14 @@ ingress:
     alb.ingress.kubernetes.io/group.name: "alb-controller"
     alb.ingress.kubernetes.io/load-balancer-name: "pagopa-prod-atm-layer-alb-int"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTP": 8080}]'
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-path: /health/v1/transaction-service
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '20'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '8'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
   hosts:
     - host:
       paths:
@@ -77,15 +113,15 @@ resources:
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 600m
-  #   memory: 600Mi
-  # requests:
-  #   cpu: 300m
-  #   memory: 300Mi
+  limits:
+    cpu: 150m
+    memory: 150Mi
+  requests:
+    cpu: 30m
+    memory: 50Mi
 
 autoscaling:
-  enabled: false
+  enabled: true
   minReplicas: 2
   maxReplicas: 4
   targetCPUUtilizationPercentage: 80

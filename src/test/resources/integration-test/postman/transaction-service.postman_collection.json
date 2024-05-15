@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "244c87e8-650e-4074-b7b3-696f242927c8",
+		"name": "transaction-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29647564",
+		"_collection_link": "https://galactic-eclipse-948669.postman.co/workspace/New-Team-Workspace~be56c5f1-de0c-4252-95d0-ee80f35e2474/collection/29647564-244c87e8-650e-4074-b7b3-696f242927c8?action=share&source=collection_link&creator=29647564"
+	},
+	"item": [
+		{
+			"name": "insert",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"transactionId\": \"transaction1\",\r\n  \"functionType\": \"menu\",\r\n  \"acquirerId\": \"111\",\r\n  \"branchId\": \"222\",\r\n  \"terminalId\": \"3\",\r\n  \"transactionStatus\": \"created\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/transaction-service/transactions/insert",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"transaction-service",
+						"transactions",
+						"insert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-api-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/transaction-service/transactions/search?pageIndex=0&pageSize=10&transactionId=transaction1&functionType=menu&acquirerId=111&branchId=222&terminalId=3&transactionStatus=created&startTime=2024-04-04 14:21:35&endTime=2024-04-18 10:40:00",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"transaction-service",
+						"transactions",
+						"search"
+					],
+					"query": [
+						{
+							"key": "pageIndex",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "transactionId",
+							"value": "transaction1"
+						},
+						{
+							"key": "functionType",
+							"value": "menu"
+						},
+						{
+							"key": "acquirerId",
+							"value": "111"
+						},
+						{
+							"key": "branchId",
+							"value": "222"
+						},
+						{
+							"key": "terminalId",
+							"value": "3"
+						},
+						{
+							"key": "transactionStatus",
+							"value": "created"
+						},
+						{
+							"key": "startTime",
+							"value": "2024-04-04 14:21:35"
+						},
+						{
+							"key": "endTime",
+							"value": "2024-04-18 10:40:00"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
