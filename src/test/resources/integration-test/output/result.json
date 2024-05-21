@@ -1,0 +1,973 @@
+{
+  "collection": {
+    "_": {
+      "postman_id": "244c87e8-650e-4074-b7b3-696f242927c8",
+      "exporter_id": "29647564",
+      "collection_link": "https://galactic-eclipse-948669.postman.co/workspace/New-Team-Workspace~be56c5f1-de0c-4252-95d0-ee80f35e2474/collection/29647564-244c87e8-650e-4074-b7b3-696f242927c8?action=share&source=collection_link&creator=29647564"
+    },
+    "item": [
+      {
+        "id": "3e0f670e-49c0-4ba8-b6b3-a0f5aa9cf410",
+        "name": "insert",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "v1",
+              "transaction-service",
+              "transactions",
+              "insert"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"transactionId\": \"transaction1\",\r\n  \"functionType\": \"menu\",\r\n  \"acquirerId\": \"111\",\r\n  \"branchId\": \"222\",\r\n  \"terminalId\": \"3\",\r\n  \"transactionStatus\": \"created\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "apikey",
+            "apikey": [
+              {
+                "type": "string",
+                "value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+                "key": "value"
+              },
+              {
+                "type": "string",
+                "value": "x-api-key",
+                "key": "key"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": []
+      },
+      {
+        "id": "95d9d2e5-c1d9-4909-b308-9bd86683c0a5",
+        "name": "search",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "v1",
+              "transaction-service",
+              "transactions",
+              "search"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [
+              {
+                "key": "pageIndex",
+                "value": "0"
+              },
+              {
+                "key": "pageSize",
+                "value": "10"
+              },
+              {
+                "key": "transactionId",
+                "value": "transaction1"
+              },
+              {
+                "key": "functionType",
+                "value": "menu"
+              },
+              {
+                "key": "acquirerId",
+                "value": "111"
+              },
+              {
+                "key": "branchId",
+                "value": "222"
+              },
+              {
+                "key": "terminalId",
+                "value": "3"
+              },
+              {
+                "key": "transactionStatus",
+                "value": "created"
+              },
+              {
+                "key": "startTime",
+                "value": "2024-04-04 14:21:35"
+              },
+              {
+                "key": "endTime",
+                "value": "2024-04-18 10:40:00"
+              }
+            ],
+            "variable": []
+          },
+          "method": "GET",
+          "auth": {
+            "type": "apikey",
+            "apikey": [
+              {
+                "type": "string",
+                "value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+                "key": "value"
+              },
+              {
+                "type": "string",
+                "value": "x-api-key",
+                "key": "key"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "3d968640-e47f-4d1a-8507-05e6e563f20c",
+              "type": "text/javascript",
+              "packages": {},
+              "exec": [
+                "pm.test(\"Status code is 200\", function () {\r",
+                "    pm.response.to.have.status(200);\r",
+                "});"
+              ],
+              "_lastExecutionId": "d0911bea-d046-41f0-89a5-c51edf727b2a"
+            }
+          }
+        ]
+      }
+    ],
+    "event": [],
+    "variable": [],
+    "info": {
+      "_postman_id": "244c87e8-650e-4074-b7b3-696f242927c8",
+      "name": "transaction-service",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    }
+  },
+  "environment": {
+    "id": "23d2190c-47c4-4a3b-87fc-69faa4ed41cd",
+    "values": [
+      {
+        "type": "any",
+        "value": "http://host.testcontainers.internal:8086",
+        "key": "baseUrl"
+      }
+    ]
+  },
+  "globals": {
+    "id": "f934da84-06aa-43d1-8960-d6cf7eb2a1d8",
+    "values": []
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 2,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequests": {
+        "total": 2,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 2,
+        "pending": 0,
+        "failed": 0
+      },
+      "tests": {
+        "total": 2,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "testScripts": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequestScripts": {
+        "total": 0,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 132.5,
+      "responseMin": 67,
+      "responseMax": 198,
+      "responseSd": 65.5,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1716282591692,
+      "completed": 1716282592013
+    },
+    "executions": [
+      {
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 2,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "95f93604-1a7f-42c9-b0c9-d94764b8e591",
+          "httpRequestId": "44a2b072-ffd4-4b64-9828-2279ceefc8ab"
+        },
+        "item": {
+          "id": "3e0f670e-49c0-4ba8-b6b3-a0f5aa9cf410",
+          "name": "insert",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "transaction-service",
+                "transactions",
+                "insert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"transactionId\": \"transaction1\",\r\n  \"functionType\": \"menu\",\r\n  \"acquirerId\": \"111\",\r\n  \"branchId\": \"222\",\r\n  \"terminalId\": \"3\",\r\n  \"transactionStatus\": \"created\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "type": "string",
+                  "value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+                  "key": "value"
+                },
+                {
+                  "type": "string",
+                  "value": "x-api-key",
+                  "key": "key"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "8086",
+            "path": [
+              "api",
+              "v1",
+              "transaction-service",
+              "transactions",
+              "insert"
+            ],
+            "host": [
+              "host",
+              "testcontainers",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "x-api-key",
+              "value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.37.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "f1e195b7-a9a1-447d-8bca-336668a4ce75",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.testcontainers.internal:8086",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "169",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"transactionId\": \"transaction1\",\r\n  \"functionType\": \"menu\",\r\n  \"acquirerId\": \"111\",\r\n  \"branchId\": \"222\",\r\n  \"terminalId\": \"3\",\r\n  \"transactionStatus\": \"created\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "apikey",
+            "apikey": [
+              {
+                "type": "string",
+                "value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+                "key": "value"
+              },
+              {
+                "type": "string",
+                "value": "x-api-key",
+                "key": "key"
+              }
+            ]
+          }
+        },
+        "response": {
+          "id": "71ce4b6d-11d7-4eb0-bcd9-b0b6fdabcace",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-length",
+              "value": "229"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              116,
+              114,
+              97,
+              110,
+              115,
+              97,
+              99,
+              116,
+              105,
+              111,
+              110,
+              73,
+              100,
+              34,
+              58,
+              34,
+              116,
+              114,
+              97,
+              110,
+              115,
+              97,
+              99,
+              116,
+              105,
+              111,
+              110,
+              49,
+              34,
+              44,
+              34,
+              102,
+              117,
+              110,
+              99,
+              116,
+              105,
+              111,
+              110,
+              84,
+              121,
+              112,
+              101,
+              34,
+              58,
+              34,
+              109,
+              101,
+              110,
+              117,
+              34,
+              44,
+              34,
+              97,
+              99,
+              113,
+              117,
+              105,
+              114,
+              101,
+              114,
+              73,
+              100,
+              34,
+              58,
+              34,
+              49,
+              49,
+              49,
+              34,
+              44,
+              34,
+              98,
+              114,
+              97,
+              110,
+              99,
+              104,
+              73,
+              100,
+              34,
+              58,
+              34,
+              50,
+              50,
+              50,
+              34,
+              44,
+              34,
+              116,
+              101,
+              114,
+              109,
+              105,
+              110,
+              97,
+              108,
+              73,
+              100,
+              34,
+              58,
+              34,
+              51,
+              34,
+              44,
+              34,
+              116,
+              114,
+              97,
+              110,
+              115,
+              97,
+              99,
+              116,
+              105,
+              111,
+              110,
+              83,
+              116,
+              97,
+              116,
+              117,
+              115,
+              34,
+              58,
+              34,
+              99,
+              114,
+              101,
+              97,
+              116,
+              101,
+              100,
+              34,
+              44,
+              34,
+              99,
+              114,
+              101,
+              97,
+              116,
+              101,
+              100,
+              65,
+              116,
+              34,
+              58,
+              34,
+              50,
+              48,
+              50,
+              52,
+              45,
+              48,
+              53,
+              45,
+              50,
+              49,
+              84,
+              49,
+              49,
+              58,
+              48,
+              57,
+              58,
+              53,
+              49,
+              46,
+              56,
+              54,
+              48,
+              43,
+              48,
+              50,
+              58,
+              48,
+              48,
+              34,
+              44,
+              34,
+              108,
+              97,
+              115,
+              116,
+              85,
+              112,
+              100,
+              97,
+              116,
+              101,
+              100,
+              65,
+              116,
+              34,
+              58,
+              34,
+              50,
+              48,
+              50,
+              52,
+              45,
+              48,
+              53,
+              45,
+              50,
+              49,
+              84,
+              49,
+              49,
+              58,
+              48,
+              57,
+              58,
+              53,
+              49,
+              46,
+              56,
+              54,
+              49,
+              43,
+              48,
+              50,
+              58,
+              48,
+              48,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 198,
+          "responseSize": 229
+        },
+        "id": "3e0f670e-49c0-4ba8-b6b3-a0f5aa9cf410"
+      },
+      {
+        "cursor": {
+          "ref": "d2085249-7da2-4a53-af2b-5301dc382422",
+          "length": 2,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "6a495b90-6ccc-494f-8194-e78c64854e27"
+        },
+        "item": {
+          "id": "95d9d2e5-c1d9-4909-b308-9bd86683c0a5",
+          "name": "search",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "transaction-service",
+                "transactions",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "pageIndex",
+                  "value": "0"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                },
+                {
+                  "key": "transactionId",
+                  "value": "transaction1"
+                },
+                {
+                  "key": "functionType",
+                  "value": "menu"
+                },
+                {
+                  "key": "acquirerId",
+                  "value": "111"
+                },
+                {
+                  "key": "branchId",
+                  "value": "222"
+                },
+                {
+                  "key": "terminalId",
+                  "value": "3"
+                },
+                {
+                  "key": "transactionStatus",
+                  "value": "created"
+                },
+                {
+                  "key": "startTime",
+                  "value": "2024-04-04 14:21:35"
+                },
+                {
+                  "key": "endTime",
+                  "value": "2024-04-18 10:40:00"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "type": "string",
+                  "value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+                  "key": "value"
+                },
+                {
+                  "type": "string",
+                  "value": "x-api-key",
+                  "key": "key"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "3d968640-e47f-4d1a-8507-05e6e563f20c",
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "_lastExecutionId": "d0911bea-d046-41f0-89a5-c51edf727b2a"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "8086",
+            "path": [
+              "api",
+              "v1",
+              "transaction-service",
+              "transactions",
+              "search"
+            ],
+            "host": [
+              "host",
+              "testcontainers",
+              "internal"
+            ],
+            "query": [
+              {
+                "key": "pageIndex",
+                "value": "0"
+              },
+              {
+                "key": "pageSize",
+                "value": "10"
+              },
+              {
+                "key": "transactionId",
+                "value": "transaction1"
+              },
+              {
+                "key": "functionType",
+                "value": "menu"
+              },
+              {
+                "key": "acquirerId",
+                "value": "111"
+              },
+              {
+                "key": "branchId",
+                "value": "222"
+              },
+              {
+                "key": "terminalId",
+                "value": "3"
+              },
+              {
+                "key": "transactionStatus",
+                "value": "created"
+              },
+              {
+                "key": "startTime",
+                "value": "2024-04-04%2014:21:35"
+              },
+              {
+                "key": "endTime",
+                "value": "2024-04-18%2010:40:00"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "x-api-key",
+              "value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.37.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "11a80936-053e-408c-bd05-92f3a5d59fbe",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.testcontainers.internal:8086",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET",
+          "auth": {
+            "type": "apikey",
+            "apikey": [
+              {
+                "type": "string",
+                "value": "TfRV0R7jTX1ZhzWxdZBvn2ALZxlhgd446EPfuECc",
+                "key": "value"
+              },
+              {
+                "type": "string",
+                "value": "x-api-key",
+                "key": "key"
+              }
+            ]
+          }
+        },
+        "response": {
+          "id": "9566edd9-fb0d-4961-971d-4c8f82b31f93",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-length",
+              "value": "64"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              112,
+              97,
+              103,
+              101,
+              34,
+              58,
+              48,
+              44,
+              34,
+              108,
+              105,
+              109,
+              105,
+              116,
+              34,
+              58,
+              49,
+              48,
+              44,
+              34,
+              105,
+              116,
+              101,
+              109,
+              115,
+              70,
+              111,
+              117,
+              110,
+              100,
+              34,
+              58,
+              48,
+              44,
+              34,
+              116,
+              111,
+              116,
+              97,
+              108,
+              80,
+              97,
+              103,
+              101,
+              115,
+              34,
+              58,
+              48,
+              44,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              115,
+              34,
+              58,
+              91,
+              93,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 67,
+          "responseSize": 64
+        },
+        "id": "95d9d2e5-c1d9-4909-b308-9bd86683c0a5",
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false
+          }
+        ]
+      }
+    ],
+    "transfers": {
+      "responseTotal": 293
+    },
+    "failures": [],
+    "error": null
+  }
+}
