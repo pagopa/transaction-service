@@ -1,15 +1,15 @@
 
 # Coverage Report: JaCoCo
 
-* AppErrorCodeEnumTest (QuarkusTest)
+* IntegrationTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
 | Code Coverage %         | 100%               |
-| :heavy_check_mark: Number of Lines Covered | 230    |
+| :heavy_check_mark: Number of Lines Covered | 226    |
 | :x: Number of Lines Missed  | 0     |
-| Total Number of Lines   | 230     |
+| Total Number of Lines   | 226     |
 
 
 ## Details:
