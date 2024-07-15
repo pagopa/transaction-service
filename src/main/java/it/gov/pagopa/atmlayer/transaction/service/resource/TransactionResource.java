@@ -15,10 +15,13 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.sql.Timestamp;
@@ -40,6 +43,13 @@ public class TransactionResource {
     @Path("/insert")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+            operationId = "insert",
+            description = "Inserimento transazione"
+    )
+    @APIResponse(responseCode = "200", description = "Ok", content = @Content(schema = @Schema(implementation = TransactionDTO.class)))
+    @APIResponse(responseCode = "4XX", description = "Bad Request", content = @Content(example = "{\"type\":\"BAD_REQUEST\", \"statusCode\":\"4XX\", \"message\":\"Messaggio di errore\", \"errorCode\":\"ATMLM_4000XXX\"}"))
+    @APIResponse(responseCode = "500", description = "Internal Server Error", content = @Content(example = "{\"type\":\"GENERIC\", \"statusCode\":\"500\", \"message\":\"Si è verificato un errore imprevisto, vedere i log per ulteriori informazioni\", \"errorCode\":\"ATMLM_500\"}"))
     public Uni<TransactionDTO> insert(@RequestBody(required = true) @Valid TransactionInsertionDTO transactionInsertionDTO) {
         TransactionEntity transactionEntity = transactionMapper.toEntityInsertion(transactionInsertionDTO);
         return this.transactionService.insertTransactionEntity(transactionEntity)
@@ -51,6 +61,13 @@ public class TransactionResource {
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+            operationId = "update",
+            description = "Aggiorna transazione"
+    )
+    @APIResponse(responseCode = "200", description = "Ok", content = @Content(schema = @Schema(implementation = TransactionDTO.class)))
+    @APIResponse(responseCode = "4XX", description = "Bad Request", content = @Content(example = "{\"type\":\"BAD_REQUEST\", \"statusCode\":\"4XX\", \"message\":\"Messaggio di errore\", \"errorCode\":\"ATMLM_4000XXX\"}"))
+    @APIResponse(responseCode = "500", description = "Internal Server Error", content = @Content(example = "{\"type\":\"GENERIC\", \"statusCode\":\"500\", \"message\":\"Si è verificato un errore imprevisto, vedere i log per ulteriori informazioni\", \"errorCode\":\"ATMLM_500\"}"))
     public Uni<TransactionDTO> update(@RequestBody(required = true) @Valid TransactionUpdateDTO transactionUpdateDTO) {
         return transactionService.updateTransactionEntity(transactionUpdateDTO)
                 .onItem()
@@ -61,7 +78,14 @@ public class TransactionResource {
     @Path("/delete/{transactionId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Void> delete(@PathParam("transactionId") String transactionId) {
+    @Operation(
+            operationId = "delete",
+            description = "Elimina transazione"
+    )
+    @APIResponse(responseCode = "204", description = "Ok")
+    @APIResponse(responseCode = "4XX", description = "Bad Request", content = @Content(example = "{\"type\":\"BAD_REQUEST\", \"statusCode\":\"4XX\", \"message\":\"Messaggio di errore\", \"errorCode\":\"ATMLM_4000XXX\"}"))
+    @APIResponse(responseCode = "500", description = "Internal Server Error", content = @Content(example = "{\"type\":\"GENERIC\", \"statusCode\":\"500\", \"message\":\"Si è verificato un errore imprevisto, vedere i log per ulteriori informazioni\", \"errorCode\":\"ATMLM_500\"}"))
+    public Uni<Void> delete(@PathParam("transactionId") @Schema(format = "byte", maxLength = 255) String transactionId) {
         return this.transactionService.deleteTransactions(transactionId)
                 .onItem()
                 .ignore()
@@ -71,16 +95,23 @@ public class TransactionResource {
     @GET
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<PageInfo<TransactionDTO>> search(@QueryParam("pageIndex") @DefaultValue("0") @Parameter(required = true, schema = @Schema(type = SchemaType.INTEGER, minimum = "0")) int pageIndex,
-                                                @QueryParam("pageSize") @DefaultValue("10") @Parameter(required = true, schema = @Schema(type = SchemaType.INTEGER, minimum = "1")) int pageSize,
-                                                @QueryParam("transactionId") String transactionId,
-                                                @QueryParam("functionType") String functionType,
-                                                @QueryParam("acquirerId") String acquirerId,
-                                                @QueryParam("branchId") String branchId,
-                                                @QueryParam("terminalId") String terminalId,
-                                                @QueryParam("transactionStatus") String transactionStatus,
-                                                @QueryParam("startTime") @Schema(example = "yyyy-mm-dd hh:mm:ss") Timestamp startTime,
-                                                @QueryParam("endTime") @Schema(example = "yyyy-mm-dd hh:mm:ss") Timestamp endTime) {
+    @Operation(
+            operationId = "search",
+            description = "Ricerca transazioni mettendo dei filtri"
+    )
+    @APIResponse(responseCode = "200", description = "Ok", content = @Content(schema = @Schema(implementation = PageInfo.class)))
+    @APIResponse(responseCode = "4XX", description = "Bad Request", content = @Content(example = "{\"type\":\"BAD_REQUEST\", \"statusCode\":\"4XX\", \"message\":\"Messaggio di errore\", \"errorCode\":\"ATMLM_4000XXX\"}"))
+    @APIResponse(responseCode = "500", description = "Internal Server Error", content = @Content(example = "{\"type\":\"GENERIC\", \"statusCode\":\"500\", \"message\":\"Si è verificato un errore imprevisto, vedere i log per ulteriori informazioni\", \"errorCode\":\"ATMLM_500\"}"))
+    public Uni<PageInfo<TransactionDTO>> search(@QueryParam("pageIndex") @DefaultValue("0") @Parameter(required = true, schema = @Schema(minimum = "1", maximum = "10000")) int pageIndex,
+                                                @QueryParam("pageSize") @DefaultValue("10") @Parameter(required = true, schema = @Schema(minimum = "1", maximum = "100")) int pageSize,
+                                                @QueryParam("transactionId") @Schema(format = "byte", maxLength = 255) String transactionId,
+                                                @QueryParam("functionType") @Schema(format = "byte", maxLength = 255) String functionType,
+                                                @QueryParam("acquirerId") @Schema(format = "byte", maxLength = 255) String acquirerId,
+                                                @QueryParam("branchId") @Schema(format = "byte", maxLength = 255) String branchId,
+                                                @QueryParam("terminalId") @Schema(format = "byte", maxLength = 255) String terminalId,
+                                                @QueryParam("transactionStatus") @Schema(format = "byte", maxLength = 255) String transactionStatus,
+                                                @QueryParam("startTime") @Schema(example = "{\"Timestamp\":\"2023-07-15 15:00:00\"}") Timestamp startTime,
+                                                @QueryParam("endTime") @Schema(example = "{\"Timestamp\":\"2023-07-15 15:00:00\"}") Timestamp endTime) {
         return this.transactionService.searchTransactions(pageIndex, pageSize, transactionId, functionType, acquirerId, branchId, terminalId, transactionStatus, startTime, endTime)
                 .onItem()
                 .transform(Unchecked.function(pagedList -> {
@@ -91,8 +122,15 @@ public class TransactionResource {
                 }));
     }
 
-    @GET
+   /* @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+            operationId = "getAll",
+            description = "Recupera tutte le transazioni che si trovano sul database"
+    )
+    @APIResponse(responseCode = "200", description = "Ok")
+    @APIResponse(responseCode = "4XX", description = "Bad Request", content = @Content(example = "{\"type\":\"BAD_REQUEST\", \"statusCode\":\"4XX\", \"message\":\"Messaggio di errore\", \"errorCode\":\"ATMLM_4000XXX\"}"))
+    @APIResponse(responseCode = "500", description = "Internal Server Error", content = @Content(example = "{\"type\":\"GENERIC\", \"statusCode\":\"500\", \"message\":\"Si è verificato un errore imprevisto, vedere i log per ulteriori informazioni\", \"errorCode\":\"ATMLM_500\"}"))
     public Uni<List<TransactionDTO>> getAll() {
         return this.transactionService.getAllTransactions()
                 .onItem()
@@ -102,6 +140,6 @@ public class TransactionResource {
                     }
                     return transactionMapper.toDTOList(list);
                 }));
-    }
+    }*/
 
 }

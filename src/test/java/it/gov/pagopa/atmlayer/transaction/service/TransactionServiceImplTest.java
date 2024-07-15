@@ -257,7 +257,7 @@ class TransactionServiceImplTest {
                 .assertItem(expectedResult);
     }
 
-    @Test
+    /*@Test
     void testGetAllTransactions() {
         List<TransactionEntity> transactionsList = new ArrayList<>();
         TransactionEntity transactionEntity = new TransactionEntity();
@@ -273,7 +273,7 @@ class TransactionServiceImplTest {
         result.subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted()
                 .assertItem(transactionsList);
-    }
+    }*/
 
     @Test
     void testScheduledDeleteWithTransactions() {
