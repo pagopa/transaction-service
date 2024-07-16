@@ -19,7 +19,7 @@ public interface TransactionService {
 
     Uni<PageInfo<TransactionEntity>> searchTransactions(int pageIndex, int pageSize, String transactionId, String functionType, String acquirerId, String branchId, String terminalId, String transacionStatus, Timestamp startTime, Timestamp endTime);
 
-    Uni<List<TransactionEntity>> getAllTransactions();
+    //Uni<List<TransactionEntity>> getAllTransactions();
 
     Uni<TransactionEntity> findById(String transactionId);
 

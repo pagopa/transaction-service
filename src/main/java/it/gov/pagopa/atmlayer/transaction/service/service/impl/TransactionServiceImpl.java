@@ -98,11 +98,11 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findByFilters(filters, pageIndex, pageSize);
     }
 
-    @Override
+   /* @Override
     @WithSession
     public Uni<List<TransactionEntity>> getAllTransactions() {
         return this.transactionRepository.findAll().list();
-    }
+    }*/
 
     @Override
     @WithSession
