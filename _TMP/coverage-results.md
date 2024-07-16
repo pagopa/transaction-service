@@ -1,7 +1,7 @@
 
 # Coverage Report: JaCoCo
 
-* IntegrationTest (QuarkusTest)
+* AppErrorCodeEnumTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
