@@ -31,10 +31,21 @@ public class TransactionRepository implements PanacheRepositoryBase<TransactionE
 
     public Uni<PageInfo<TransactionEntity>> findByFilters(Map<String, Object> params, int pageIndex, int pageSize) {
 
-        String queryFilters = params.keySet().stream()
-                .map(key -> "startTime".equals(key) ? "t.createdAt >= :" + key : ("endTime".equals(key) ? "t.createdAt <= :" + key : "t." + key + " = :" + key))
+        String queryFilters = params.entrySet().stream()
+                .map(entry -> {
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
+                    if ("startTime".equals(key)) {
+                        return "t.createdAt >= :" + key;
+                    } else if ("endTime".equals(key)) {
+                        return "t.createdAt <= :" + key;
+                    } else if (value instanceof String) {
+                        return "LOWER(t." + key + ") LIKE LOWER(CONCAT('%', :" + key + ", '%'))";
+                    } else {
+                        return "t." + key + " = :" + key;
+                    }
+                })
                 .collect(Collectors.joining(" and "));
-//          "t.branchId = :branchId and ... and t.createdAt >= :startTime and t.createdAt <= :endTime"
 
         PanacheQuery<TransactionEntity> queryResult = find(("select t from TransactionEntity t")
                 .concat(queryFilters.isBlank() ? "" : " where " + queryFilters)
