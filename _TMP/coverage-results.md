@@ -1,15 +1,15 @@
 
 # Coverage Report: JaCoCo
 
-* IntegrationTest (QuarkusTest)
+* AppErrorCodeEnumTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 100%               |
-| :heavy_check_mark: Number of Lines Covered | 219    |
-| :x: Number of Lines Missed  | 0     |
-| Total Number of Lines   | 219     |
+| Code Coverage %         | 99.56%               |
+| :heavy_check_mark: Number of Lines Covered | 227    |
+| :x: Number of Lines Missed  | 1     |
+| Total Number of Lines   | 228     |
 
 
 ## Details:
@@ -274,11 +274,11 @@
 
 <details>
     <summary>
-:heavy_check_mark: TransactionRepository.java
+:x: TransactionRepository.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 
