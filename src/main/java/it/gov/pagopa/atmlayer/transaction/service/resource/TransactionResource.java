@@ -51,6 +51,7 @@ public class TransactionResource {
     @APIResponse(responseCode = "4XX", description = "Bad Request", content = @Content(example = "{\"type\":\"BAD_REQUEST\", \"statusCode\":\"4XX\", \"message\":\"Messaggio di errore\", \"errorCode\":\"ATMLM_4000XXX\"}"))
     @APIResponse(responseCode = "500", description = "Internal Server Error", content = @Content(example = "{\"type\":\"GENERIC\", \"statusCode\":\"500\", \"message\":\"Si è verificato un errore imprevisto, vedere i log per ulteriori informazioni\", \"errorCode\":\"ATMLM_500\"}"))
     public Uni<TransactionDTO> insert(@RequestBody(required = true) @Valid TransactionInsertionDTO transactionInsertionDTO) {
+        log.info("Insert transaction: {}", transactionInsertionDTO);
         TransactionEntity transactionEntity = transactionMapper.toEntityInsertion(transactionInsertionDTO);
         return this.transactionService.insertTransactionEntity(transactionEntity)
                 .onItem()
@@ -69,6 +70,7 @@ public class TransactionResource {
     @APIResponse(responseCode = "4XX", description = "Bad Request", content = @Content(example = "{\"type\":\"BAD_REQUEST\", \"statusCode\":\"4XX\", \"message\":\"Messaggio di errore\", \"errorCode\":\"ATMLM_4000XXX\"}"))
     @APIResponse(responseCode = "500", description = "Internal Server Error", content = @Content(example = "{\"type\":\"GENERIC\", \"statusCode\":\"500\", \"message\":\"Si è verificato un errore imprevisto, vedere i log per ulteriori informazioni\", \"errorCode\":\"ATMLM_500\"}"))
     public Uni<TransactionDTO> update(@RequestBody(required = true) @Valid TransactionUpdateDTO transactionUpdateDTO) {
+        log.info("Update transaction: {}", transactionUpdateDTO);
         return transactionService.updateTransactionEntity(transactionUpdateDTO)
                 .onItem()
                 .transformToUni(updatedTransaction -> Uni.createFrom().item(transactionMapper.toDTO(updatedTransaction)));
