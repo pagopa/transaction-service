@@ -78,9 +78,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @WithSession
     public Uni<PageInfo<TransactionEntity>> searchTransactions(int pageIndex, int pageSize, String transactionId, String functionType, String acquirerId, String branchId, String terminalId, String transacionStatus, Timestamp startTime, Timestamp endTime) {
-        if ((startTime == null && endTime != null) || (startTime != null && endTime == null)) {
-            throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.BOTH_STARTTIME_AND_ENDTIME_SHOULD_BE_PRESENT);
-        } else if (startTime != null && startTime.after(endTime)) {
+        if (startTime != null && endTime!= null && startTime.after(endTime)) {
             throw new AtmLayerException(Response.Status.BAD_REQUEST, AppErrorCodeEnum.STARTTIME_CANNOT_BE_GREATER_THAN_ENDTIME);
         }
         Map<String, Object> filters = new HashMap<>();
@@ -98,11 +96,11 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findByFilters(filters, pageIndex, pageSize);
     }
 
-    @Override
+   /* @Override
     @WithSession
     public Uni<List<TransactionEntity>> getAllTransactions() {
         return this.transactionRepository.findAll().list();
-    }
+    }*/
 
     @Override
     @WithSession

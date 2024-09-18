@@ -178,7 +178,7 @@ class TransactionResourceTest {
         verify(transactionMapper, times(1)).toDtoPaged(any(PageInfo.class));
     }
 
-    @Test
+    /*@Test
     void testGetAll() {
         List<TransactionEntity> transactionsList = new ArrayList<>();
         TransactionEntity transactionEntity = new TransactionEntity();
@@ -202,9 +202,9 @@ class TransactionResourceTest {
         assertEquals(1, result.size());
         verify(transactionService, times(1)).getAllTransactions();
         verify(transactionMapper, times(1)).toDTOList(transactionsList);
-    }
+    }*/
 
-    @Test
+    /*@Test
     void testGetAllEmptyList() {
         List<TransactionEntity> transactionsList = new ArrayList<>();
         List<TransactionDTO> dtoList = new ArrayList<>();
@@ -225,5 +225,5 @@ class TransactionResourceTest {
         verify(transactionService, times(1)).getAllTransactions();
         verify(transactionMapper, times(1)).toDTOList(transactionsList);
     }
-
+*/
 }

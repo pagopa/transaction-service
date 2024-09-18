@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 100%               |
-| :heavy_check_mark: Number of Lines Covered | 226    |
-| :x: Number of Lines Missed  | 0     |
-| Total Number of Lines   | 226     |
+| Code Coverage %         | 99.12%               |
+| :heavy_check_mark: Number of Lines Covered | 225    |
+| :x: Number of Lines Missed  | 2     |
+| Total Number of Lines   | 227     |
 
 
 ## Details:
@@ -202,11 +202,11 @@
 
 <details>
     <summary>
-:heavy_check_mark: TransactionServiceImpl.java
+:x: TransactionServiceImpl.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 
@@ -274,11 +274,11 @@
 
 <details>
     <summary>
-:heavy_check_mark: TransactionRepository.java
+:x: TransactionRepository.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 
