@@ -20,7 +20,7 @@ database:
   type: postgresql
   url: postgresql://pagopa-uat-atm-layer-rds.cluster-csdbokdg0q4t.eu-south-1.rds.amazonaws.com:5432/pagopadb?search_path=atm_layer_model_schema
   credentialsSecretEnabled: true
-  credentialsSecretName: "pagopa-uat-atm-layer-transaction-service-database"
+  credentialsSecretName: "pagopa-uat-atm-layer-mil-adapter-database-database"
   credentialsSecretKeys:
     username: DB_USERNAME
     password: DB_PASSWORD
@@ -114,17 +114,17 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 250m
+    cpu: 150m
     memory: 150Mi
   requests:
-    cpu: 60m
+    cpu: 30m
     memory: 50Mi
 
 autoscaling:
   enabled: true
   minReplicas: 2
-  maxReplicas: 8
-  targetCPUUtilizationPercentage: 60
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
