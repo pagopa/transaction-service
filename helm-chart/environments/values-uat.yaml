@@ -20,7 +20,7 @@ database:
   type: postgresql
   url: postgresql://pagopa-uat-atm-layer-rds.cluster-csdbokdg0q4t.eu-south-1.rds.amazonaws.com:5432/pagopadb?search_path=atm_layer_model_schema
   credentialsSecretEnabled: true
-  credentialsSecretName: "pagopa-uat-atm-layer-mil-adapter-database"
+  credentialsSecretName: "pagopa-uat-atm-layer-transaction-service-database"
   credentialsSecretKeys:
     username: DB_USERNAME
     password: DB_PASSWORD
