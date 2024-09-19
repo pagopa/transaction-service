@@ -20,7 +20,7 @@ database:
   type: postgresql
   url: postgresql://pagopa-prod-atm-layer-rds.cluster-cjww3kikqdtw.eu-south-1.rds.amazonaws.com:5432/pagopadb?search_path=atm_layer_model_schema
   credentialsSecretEnabled: true
-  credentialsSecretName: "pagopa-prod-atm-layer-mil-adapter-database"
+  credentialsSecretName: "pagopa-prod-atm-layer-mil-adapter-database-database"
   credentialsSecretKeys:
     username: DB_USERNAME
     password: DB_PASSWORD
@@ -115,16 +115,16 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
     cpu: 150m
-    memory: 150Mi
+    memory: 200Mi
   requests:
     cpu: 30m
-    memory: 50Mi
+    memory: 80Mi
 
 autoscaling:
   enabled: true
   minReplicas: 2
-  maxReplicas: 4
-  targetCPUUtilizationPercentage: 80
+  maxReplicas: 8
+  targetCPUUtilizationPercentage: 60
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}

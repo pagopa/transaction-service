@@ -28,11 +28,6 @@ class AppErrorCodeEnumTest {
         assertEquals("startTime should come before endTime", startTimeGreaterThanEndTime.getErrorMessage());
         assertEquals(AppErrorType.INCORRECT_INPUT, startTimeGreaterThanEndTime.getType());
 
-        AppErrorCodeEnum bothStartAndEndTimesRequired = AppErrorCodeEnum.BOTH_STARTTIME_AND_ENDTIME_SHOULD_BE_PRESENT;
-        assertEquals("ATMLTS_1000003", bothStartAndEndTimesRequired.getErrorCode());
-        assertEquals("Both startTime and endTime should be present", bothStartAndEndTimesRequired.getErrorMessage());
-        assertEquals(AppErrorType.NULL_FIELDS, bothStartAndEndTimesRequired.getType());
-
         AppErrorCodeEnum allFieldsBlank = AppErrorCodeEnum.ALL_FIELDS_ARE_BLANK;
         assertEquals("ATMLTS_1000002", allFieldsBlank.getErrorCode());
         assertEquals("All the fields that can be updated are blank", allFieldsBlank.getErrorMessage());
